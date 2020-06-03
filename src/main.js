@@ -6,6 +6,7 @@ Vue.config.productionTip = false
 
 // 全局路由钩子
 router.beforeEach((to, from, next) => {
+  document.title = to.meta.title;
   console.log('路由钩子')
   console.log(to)
   console.log(from)

@@ -8,7 +8,8 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    component: index
+    component: index,
+    meta: { title: '首页' }
   },
   {
     path: '/about',
