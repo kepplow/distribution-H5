@@ -4,7 +4,7 @@
       <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
       <div>首页</div>
     </div>
-    <div class="flex flex-column justify-center align-center">
+    <div class="flex flex-column justify-center align-center" @click="goto('/memberManage')">
       <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
       <div>成员管理</div>
     </div>
@@ -20,7 +20,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goto(path) {
+      this.$router.push("/memberManage");
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

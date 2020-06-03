@@ -84,7 +84,6 @@ export default {
   mounted() {
     let scrollBarWidth = this.$refs["scrollBar"].clientWidth;
     let fooBarWidth = this.$refs["scrollBar"].parentNode.clientWidth;
-    console.log(this.scrollBarWidth);
     this.timer = setInterval(() => {
       if (this.scrollBarLeft + scrollBarWidth <= 0) {
         this.scrollBarLeft = fooBarWidth;
