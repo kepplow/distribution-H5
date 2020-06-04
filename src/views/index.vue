@@ -39,7 +39,7 @@
         </div>
         <div class="text-gray">点击进行结算 &gt;</div>
       </div>
-      <div class="flex justify-between align-center border-bottom px-1 py-2">
+      <div class="flex justify-between align-center border-bottom px-1 py-2"  @click="jump">
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">今日充值</span>
@@ -79,6 +79,9 @@ export default {
   methods: {
     msg() {
       return () => {};
+    },
+    jump(){
+      this.$router.push({name:'todayRefall'})
     }
   },
   mounted() {

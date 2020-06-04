@@ -15,6 +15,14 @@ const routes = [
     path: '/memberManage',
     name: 'memberManage',
     component: () => import(/* webpackChunkName: "memberManage" */ '../views/memberManage.vue')
+  },
+  {
+    path: '/todayRefall',
+    name: 'todayRefall',
+    component: () => import(/* webpackChunkName: "memberManage" */ '../views/todayRefall.vue'),
+    meta:{
+      title: '今日充值'
+    }
   }
 ]
 
