@@ -54,7 +54,7 @@ export default {
   },
   methods:{
       toIndexPage(){
-          this.$router.push({name:'index'})
+          this.$router.go(-1)
       }
   }
 };
