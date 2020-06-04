@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="box">
-      <div class="ret" @click="toIndexPage()">
+      <div class="ret" @click="toIndexPage">
         <div>
           <img src="../assets/images/arrow.png" />
         </div>

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../views/index.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +21,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "memberManage" */ '../views/todayRefall.vue'),
     meta:{
       title: '今日充值'
+    }
+  },
+  {
+    path: '/recharge',
+    name: 'recharge',
+    component: () => import(/* webpackChunkName: "memberManage" */ '../views/recharge.vue'),
+    meta:{
+      title: '余额充值'
     }
   }
 ]
