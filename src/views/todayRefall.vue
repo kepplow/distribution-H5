@@ -30,10 +30,10 @@
         <van-col span="8">
           <span>{{i.a}}</span>
         </van-col>
-        <van-col span="8">
+        <van-col span="10">
           <span class="cen">{{i.b}}</span>
         </van-col>
-        <van-col span="8">
+        <van-col span="6">
           <span>{{i.c}}</span>
         </van-col>
       </van-row>
@@ -62,19 +62,19 @@ export default {
 <style lang="less" scoped>
 .box {
   display: flex;
-  border-top: 1px solid rgb(230, 230, 230);
-  margin-top: 20px;
+  border-top: 0.0625rem solid rgb(230, 230, 230);
+  margin-top: 1.25rem;
   font-weight: 500;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   .ret {
-    border-right: 1px solid rgb(230, 230, 230);
+    border-right: 0.0625rem solid rgb(230, 230, 230);
     width: 100%;
-    padding: 15px 0px;
+    padding: 0.9375rem 0rem;
     text-align: center;
   }
   .search {
     width: 100%;
-    padding: 15px 0px;
+    padding: 0.9375rem 0rem;
     text-align: center;
   }
   h5 {
@@ -85,17 +85,17 @@ export default {
 .title {
   display: flex;
   width: 100%;
-  height: 70px;
+  height: 4.375rem;
   background-color: rgb(40, 166, 155);
   color: white;
   div {
     text-align: left;
     width: 33.33%;
-    line-height: 70px;
-    padding-left: 20px;
+    line-height: 4.375rem;
+    padding-left: 1.25rem;
   }
 }
 .dispaly {
-  padding: 20px 0;
+  padding: 1.25rem 0;
 }
 </style>
