@@ -7,13 +7,13 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    component: () => import(/* webpackChunkName: "index" */ '../views/index.vue'),
+    component: () => import('../views/index.vue'),
     meta: { title: '首页' }
   },
   {
     path: '/memberManage',
     name: 'memberManage',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/memberManage.vue'),
+    component: () => import('../views/memberManage.vue'),
     meta:{
       title: '成员管理'
     }
@@ -21,15 +21,47 @@ const routes = [
   {
     path: '/relatives',
     name: 'relatives',
-    component: () => import(/* webpackChunkName: "relatives" */ '../views/relatives.vue'),
+    component: () => import('../views/relatives.vue'),
     meta:{
       title: '亲友圈'
     }
   },
   {
+    path: '/chargeCard',
+    name: 'chargeCard',
+    component: () => import('../views/chargeCard.vue'),
+    meta:{
+      title: '充卡'
+    }
+  },
+  {
+    path: '/tableList',
+    name: 'tableList',
+    component: () => import('../views/tableList.vue'),
+    meta:{
+      title: '桌子列表'
+    }
+  },
+  {
+    path: '/relativesRecord',
+    name: 'relativesRecord',
+    component: () => import('../views/relativesRecord.vue'),
+    meta:{
+      title: '亲友圈战绩'
+    }
+  },
+  {
+    path: '/chart',
+    name: 'chart',
+    component: () => import('../views/chart.vue'),
+    meta:{
+      title: '收入统计'
+    }
+  },
+  {
     path: '/todayRefall',
     name: 'todayRefall',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/todayRefall.vue'),
+    component: () => import('../views/todayRefall.vue'),
     meta:{
       title: '今日充值'
     }
@@ -37,7 +69,7 @@ const routes = [
   {
     path: '/recharge',
     name: 'recharge',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/recharge.vue'),
+    component: () => import('../views/recharge.vue'),
     meta:{
       title: '余额充值'
     }
@@ -45,7 +77,7 @@ const routes = [
   {
     path: '/relation',
     name: 'relation',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/relation.vue'),
+    component: () => import('../views/relation.vue'),
     meta:{
       title: '关系谱'
     }
@@ -53,7 +85,7 @@ const routes = [
   {
     path: '/agentAdd',
     name: 'agentAdd',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/agentAdd.vue'),
+    component: () => import('../views/agentAdd.vue'),
     meta:{
       title: '推荐代理'
     }

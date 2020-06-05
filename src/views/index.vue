@@ -19,9 +19,9 @@
         </div>
       </div>
     </div>
-    <div class="w-100 bg-warning relative p-1 overflow-hidden">
+    <div class="w-100 bg-warning relative p-2 overflow-hidden">
       <div
-        class="flex relative w-auto inline-flex font text-dark-second-1"
+        class="flex relative w-auto inline-flex text-dark-second-1"
         :style="`left: ${scrollBarLeft}px`"
         ref="scrollBar"
       >
