@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="seach">
-      <van-field v-model="sms" center clearable placeholder="姓名">
+      <van-field v-model="name" center clearable placeholder="姓名">
         <template #button>
           <van-button size="small" type="primary">搜索</van-button>
         </template>
@@ -53,6 +53,7 @@ import { Button } from "vant";
 export default {
   data() {
     return {
+      name:'',
       list: [
         {
           friend: "我的亲友圈A",

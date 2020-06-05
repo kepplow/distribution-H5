@@ -9,7 +9,7 @@
       <div>成员管理</div>
     </div>
     <div class="flex flex-column justify-center align-center">
-      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
+      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" @click="goto('/relatives')" />
       <div>亲友圈</div>
     </div>
     <div class="flex flex-column justify-center align-center">

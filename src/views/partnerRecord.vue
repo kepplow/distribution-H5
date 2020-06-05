@@ -5,36 +5,48 @@
         <div>
           <img src="../assets/images/arrow.png" />
         </div>
+        <h5>返回首页</h5>
       </div>
       <div class="search">
         <div>
           <img src="../assets/images/search.png" />
         </div>
+        <h5>搜索</h5>
       </div>
     </div>
-    <van-field v-model="value" center clearable placeholder="搜索" style="padding:5px 5px">
-      <template #button>
-        <van-button size="small" type="primary">搜索</van-button>
-      </template>
-    </van-field>
-
     <div class="title">
       <div>
         <span>时间</span>
       </div>
       <div>
-        <span>出售详情</span>
+        <span>关系</span>
+      </div>
+      <div>
+        <span>充值总额</span>
+      </div>
+      <div>
+        <span>返利</span>
+      </div>
+      <div>
+        <span>合伙人提成</span>
       </div>
     </div>
     <div class="dispaly" v-for="(i,v) of list" :key="v">
       <van-row gutter="20" type="flex" justify="space-around">
-        <van-col span="8">
-          <span>{{i.friend}}</span>
-          <br />
-          <span>ID:{{i.id}}</span>
+        <van-col span="6">
+          <span>{{i.time}}</span>
         </van-col>
-        <van-col span="16">
-          <span class="cen">{{i.details}}</span>
+        <van-col span="8">
+          <span class="cen">{{i.identity}}</span>
+        </van-col>
+        <van-col span="6">
+          <span>{{i.quota}}</span>
+        </van-col>
+        <van-col span="6">
+          <span>{{i.rebate}}</span>
+        </van-col>
+        <van-col span="6">
+          <span>{{i.commission}}</span>
         </van-col>
       </van-row>
     </div>
@@ -45,25 +57,27 @@
 export default {
   data() {
     return {
-      value:'',
       list: [
         {
-          friend: "我的亲友圈A",
-          id: 123333,
-          details:
-            "2020.03.03 14:20:00 -4房卡，剩余：34房卡，购买人：张三四，购买人id：123123"
+          time: "2020-04-05",
+          identity: "一级代理",
+          quota: 6000,
+          rebate: "120[30%]",
+          commission: "120[10%]"
         },
         {
-          friend: "我的亲友圈A",
-          id: 123333,
-          details:
-            "2020.03.03 14:20:00 -4房卡，剩余：34房卡，购买人：张三四，购买人id：123123"
+          time: "2020-04-05",
+          identity: "指数玩家",
+          quota: 6000,
+          rebate: "120[30%]",
+          commission: "120[10%]"
         },
         {
-          friend: "我的亲友圈A",
-          id: 123333,
-          details:
-            "2020.03.03 14:20:00 -4房卡，剩余：34房卡，购买人：张三四，购买人id：123123"
+          time: "2020-04-05",
+          identity: "二级代理玩家",
+          quota: 6000,
+          rebate: "120[30%]",
+          commission: "120[10%]"
         }
       ]
     };
@@ -75,7 +89,6 @@ export default {
   }
 };
 </script>
-
 <style lang="less" scoped>
 .box {
   display: flex;
@@ -114,6 +127,5 @@ export default {
 }
 .dispaly {
   padding: 1.25rem 0;
-  border-bottom: 1px solid rgb(225, 225, 225);
 }
 </style>
