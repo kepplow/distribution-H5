@@ -11,6 +11,12 @@ const routes = [
     meta: { title: '首页' }
   },
   {
+    path: '/home',
+    name: 'home',
+    component: () => import(/* webpackChunkName: "index" */ '../views/home.vue'),
+    meta: { title: '个人中心' }
+  },
+  {
     path: '/memberManage',
     name: 'memberManage',
     component: () => import(/* webpackChunkName: "memberManage" */ '../views/memberManage.vue'),
