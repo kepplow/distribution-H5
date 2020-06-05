@@ -1,13 +1,13 @@
 <template>
   <div class="member-manage">
-    <div class="flex">
+    <div class="flex" @click="to('relation')">
       <div>
         <img src="../assets/images/identity.png" />
         <span>关系谱</span>
       </div>
       <div>></div>
     </div>
-    <div class="flex">
+    <div class="flex" @click="to('agentAdd')">
       <div>
         <img src="../assets/images/label.png" />
         <span>推荐代理</span>
@@ -34,6 +34,11 @@ export default {
   },
   components: {
     bottomBar
+  },
+  methods: {
+    to(path) {
+      this.$router.push({ name: path });
+    }
   }
 };
 </script>
@@ -59,7 +64,7 @@ export default {
       }
     }
   }
-  .bottom-sty{
+  .bottom-sty {
     border-bottom: 0.0625rem solid rgb(245, 245, 245);
   }
 }

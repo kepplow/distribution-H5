@@ -33,6 +33,22 @@ const routes = [
     meta:{
       title: '余额充值'
     }
+  },
+  {
+    path: '/relation',
+    name: 'relation',
+    component: () => import(/* webpackChunkName: "memberManage" */ '../views/relation.vue'),
+    meta:{
+      title: '关系谱'
+    }
+  },
+  {
+    path: '/agentAdd',
+    name: 'agentAdd',
+    component: () => import(/* webpackChunkName: "memberManage" */ '../views/agentAdd.vue'),
+    meta:{
+      title: '推荐代理'
+    }
   }
 ]
 
