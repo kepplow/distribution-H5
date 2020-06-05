@@ -31,7 +31,7 @@
         />
       </van-popup>
     </div>
-    <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
+    <van-button type="primary" class="btn" @click="submit" size="large">确定转让</van-button>
   </div>
 </template>
 

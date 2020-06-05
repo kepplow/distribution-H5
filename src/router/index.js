@@ -91,11 +91,59 @@ const routes = [
     }
   },
   {
-    path: '/bindID',  
+    path: '/bindID',
     name: 'bindID',
     component: () => import('../views/bindID.vue'),
-    meta:{
+    meta: {
       title: '绑定圈主ID'
+    }
+  },
+  {
+    path: '/apply',
+    name: 'apply',
+    component: () => import('../views/apply.vue'),
+    meta: {
+      title: '申请列表'
+    }
+  },
+  {
+    path: '/cardReffRecord',
+    name: 'cardReffRecord',
+    component: () => import('../views/cardReffRecord.vue'),
+    meta: {
+      title: '冲卡记录'
+    }
+  },
+  {
+    path: '/memberList',
+    name: 'memberList',
+    component: () => import('../views/memberList.vue'),
+    meta: {
+      title: '成员列表'
+    }
+  },
+  {
+    path: '/makeOver',
+    name: 'makeOver',
+    component: () => import('../views/makeOver.vue'),
+    meta: {
+      title: '转让亲友圈'
+    }
+  },
+  {
+    path: '/rechargeRecord',
+    name: 'rechargeRecord',
+    component: () => import('../views/rechargeRecord.vue'),
+    meta: {
+      title: '充值记录'
+    }
+  }, 
+  {
+    path: '/partnerRecord',
+    name: 'partnerRecord',
+    component: () => import('../views/partnerRecord.vue'),
+    meta: {
+      title: '合伙人充值记录'
     }
   }
 ]

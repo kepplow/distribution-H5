@@ -51,7 +51,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 0.0625rem solid rgb(245, 245, 245);
+    border-top: 0.0625rem solid rgb(230, 230, 230);
     color: gray;
     padding: 0.625rem;
     div:first-child {
@@ -65,7 +65,7 @@ export default {
     }
   }
   .bottom-sty {
-    border-bottom: 0.0625rem solid rgb(245, 245, 245);
+    border-bottom: 0.0625rem solid rgb(230, 230, 230);
   }
 }
 </style>
