@@ -27,8 +27,10 @@
       </div>
       <div class="mr-1">&gt;</div>
     </div>
-    <div class="flex justify-between align-center ml-2 py-2 border-bottom"
-    @click="goto('/tableList')">
+    <div
+      class="flex justify-between align-center ml-2 py-2 border-bottom"
+      @click="goto('/tableList')"
+    >
       <div class>
         <span>icon</span>
         <span>桌子列表</span>
@@ -52,8 +54,10 @@
       </div>
       <div class="mr-1">&gt;</div>
     </div>
-    <div class="flex justify-between align-center ml-2 py-2 border-bottom"
-    @click="goto('/relativesRecord')">
+    <div
+      class="flex justify-between align-center ml-2 py-2 border-bottom"
+      @click="goto('/relativesRecord')"
+    >
       <div class>
         <span>icon</span>
         <span>亲友圈战绩</span>
@@ -116,10 +120,5 @@ export default {
 };
 </script>
 
-<<<<<<< HEAD
 <style>
-=======
-
-<style lang="less" scoped>
->>>>>>> 44331512f9a51fdfdb5b42c0f68e7bbcb9036b4e
 </style>
