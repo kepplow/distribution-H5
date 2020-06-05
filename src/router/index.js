@@ -57,6 +57,22 @@ const routes = [
     meta:{
       title: '绑定圈主ID'
     }
+  },
+  {
+    path: '/apply',  
+    name: 'apply',
+    component: () => import('../views/apply.vue'),
+    meta:{
+      title: '申请列表'
+    }
+  },
+  {
+    path: '/cardReffRecord',  
+    name: 'cardReffRecord',
+    component: () => import('../views/cardReffRecord.vue'),
+    meta:{
+      title: '冲卡记录'
+    }
   }
 ]
 
