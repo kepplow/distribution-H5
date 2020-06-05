@@ -23,7 +23,7 @@
 export default {
   methods: {
     goto(path) {
-      this.$router.push("/memberManage");
+      this.$router.push(path);
     }
   }
 };

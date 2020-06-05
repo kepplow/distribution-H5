@@ -13,7 +13,10 @@ const routes = [
   {
     path: '/memberManage',
     name: 'memberManage',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../views/memberManage.vue')
+    component: () => import(/* webpackChunkName: "memberManage" */ '../views/memberManage.vue'),
+    meta:{
+      title: '成员管理'
+    }
   },
   {
     path: '/todayRefall',
@@ -38,5 +41,8 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 export default router
