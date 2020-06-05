@@ -28,13 +28,13 @@
     <div class="dispaly" v-for="(i,v) of list" :key="v">
       <van-row gutter="20" type="flex" justify="space-around">
         <van-col span="8">
-          <span>{{i.a}}</span>
+          <span>{{i.time}}</span>
         </van-col>
         <van-col span="10">
-          <span class="cen">{{i.b}}</span>
+          <span class="cen">{{i.identity}}</span>
         </van-col>
         <van-col span="6">
-          <span>{{i.c}}</span>
+          <span>{{i.quota}}</span>
         </van-col>
       </van-row>
     </div>
@@ -46,16 +46,16 @@ export default {
   data() {
     return {
       list: [
-        { a: "2020-04-05", b: "一级代理", c: 6000 },
-        { a: "2020-04-05", b: "指数玩家", c: 6000 },
-        { a: "2020-04-05", b: "二级代理玩家", c: 6000 }
+        { time: "2020-04-05", identity: "一级代理", quota: 6000 },
+        { time: "2020-04-05", identity: "指数玩家", quota: 6000 },
+        { time: "2020-04-05", identity: "二级代理玩家", quota: 6000 }
       ]
     };
   },
-  methods:{
-      toIndexPage(){
-          this.$router.go(-1)
-      }
+  methods: {
+    toIndexPage() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
