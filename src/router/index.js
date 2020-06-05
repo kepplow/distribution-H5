@@ -49,6 +49,14 @@ const routes = [
     meta:{
       title: '推荐代理'
     }
+  },
+  {
+    path: '/bindID',  
+    name: 'bindID',
+    component: () => import('../views/bindID.vue'),
+    meta:{
+      title: '绑定圈主ID'
+    }
   }
 ]
 
