@@ -47,7 +47,7 @@ export default {};
     // align-items: center;
     justify-content: space-between;
     font-size: 0.875rem;
-    border-bottom: 0.0625rem solid;
+    border-bottom: 0.0625rem solid rgb(220, 220, 220);
     padding-bottom: 0.9375rem;
     margin-top: 0.625rem;
     .flex {
