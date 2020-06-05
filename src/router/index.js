@@ -19,6 +19,14 @@ const routes = [
     }
   },
   {
+    path: '/relatives',
+    name: 'relatives',
+    component: () => import(/* webpackChunkName: "relatives" */ '../views/relatives.vue'),
+    meta:{
+      title: '亲友圈'
+    }
+  },
+  {
     path: '/todayRefall',
     name: 'todayRefall',
     component: () => import(/* webpackChunkName: "memberManage" */ '../views/todayRefall.vue'),
