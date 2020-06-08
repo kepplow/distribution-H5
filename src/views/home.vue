@@ -13,10 +13,10 @@
     <div class="flex">
       <div>
         <img src="../assets/images/nickname.png" />
-        <span>你高兴就好</span>
+        <span>微信昵称</span>
       </div>
       <div>
-        <span>Bracke</span>&nbsp;&nbsp;&nbsp;
+        <span>你高兴就好</span>&nbsp;&nbsp;&nbsp;
         <span>></span>
       </div>
     </div>
