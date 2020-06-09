@@ -19,9 +19,9 @@
         </div>
       </div>
     </div>
-    <div class="w-100 bg-warning relative p-1 overflow-hidden">
+    <div class="w-100 bg-warning relative p-2 overflow-hidden">
       <div
-        class="flex relative w-auto inline-flex font text-dark-second-1"
+        class="flex relative w-auto inline-flex text-dark-second-1"
         :style="`left: ${scrollBarLeft}px`"
         ref="scrollBar"
       >
@@ -31,7 +31,7 @@
     </div>
 
     <div>
-      <div class="flex justify-between align-center border-bottom px-1 py-2">
+      <div class="flex justify-between align-center border-bottom px-1 py-2" @click="show">
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">可结算</span>
@@ -39,7 +39,7 @@
         </div>
         <div class="text-gray">点击进行结算 &gt;</div>
       </div>
-      <div class="flex justify-between align-center border-bottom px-1 py-2">
+      <div class="flex justify-between align-center border-bottom px-1 py-2" @click="jump">
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">今日充值</span>
@@ -47,7 +47,7 @@
         </div>
         <div class="text-gray">&gt;</div>
       </div>
-      <div class="flex justify-between align-center border-bottom px-1 py-2">
+      <div class="flex justify-between align-center border-bottom px-1 py-2" @click="rechargeRe">
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">余额充值</span>
@@ -64,6 +64,7 @@
 
 <script>
 import bottomBar from "../components/common/bottomBar.vue";
+import { Dialog } from 'vant';
 
 export default {
   name: "index",
@@ -79,6 +80,24 @@ export default {
   methods: {
     msg() {
       return () => {};
+    },
+    jump() {
+      this.$router.push({ name: "todayRefall" });
+    },
+    rechargeRe(){
+      this.$router.push({ name: "recharge" });
+    },
+    show() {
+      Dialog.confirm({
+        title: "操作确认",
+        message: "确认结算当前余额"
+      })
+        .then(() => {
+          // on confirm
+        })
+        .catch(() => {
+          // on cancel
+        });
     }
   },
   mounted() {

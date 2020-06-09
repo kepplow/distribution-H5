@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-bar">
-    <div class="flex flex-column justify-center align-center activ my-05">
+    <div class="flex flex-column justify-center align-center activ my-05" @click="goto('/memberManage')">
       <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
       <div>首页</div>
     </div>
@@ -9,11 +9,11 @@
       <div>成员管理</div>
     </div>
     <div class="flex flex-column justify-center align-center">
-      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
+      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" @click="goto('/relatives')" />
       <div>亲友圈</div>
     </div>
     <div class="flex flex-column justify-center align-center">
-      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
+      <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" @click="goto('/home')"/>
       <div>个人中心</div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 export default {
   methods: {
     goto(path) {
-      this.$router.push("/memberManage");
+      this.$router.push(path);
     }
   }
 };
