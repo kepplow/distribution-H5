@@ -3,9 +3,15 @@ import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import WS from "../public/websocket/WBT";
 
 Vue.use(Vant);
 Vue.config.productionTip = false
+
+Vue.prototype.WS = new WS({
+  ip: 'ws://47.105.60.123:7008'
+});
+// Vue.prototype.WS = new WebSocket('ws://47.105.60.123:7008', "default-protocol");
 
 // 全局路由钩子
 router.beforeEach((to, from, next) => {

@@ -64,7 +64,7 @@
 
 <script>
 import bottomBar from "../components/common/bottomBar.vue";
-import { Dialog } from 'vant';
+import { Dialog } from "vant";
 
 export default {
   name: "index",
@@ -78,13 +78,47 @@ export default {
     bottomBar
   },
   methods: {
+    /**
+     * 解密
+     */
+    dec(hex) {
+      let str = this.hexToString(hex);
+      let c = String.fromCharCode(str.charCodeAt(0) - str.length);
+      for (let i = 1; i < str.length; i++) {
+        c += String.fromCharCode(str.charCodeAt(i) - c.charCodeAt(i - 1));
+      }
+      return c;
+    },
+    /**
+     * 十六进制转化为字符串
+     * @param str
+     * @returns {string}
+     */
+    hexToString(str) {
+      let val = "";
+      let arr = str.split(",");
+      for (let i = 0; i < arr.length; i++) {
+        val += String.fromCharCode(parseInt(arr[i], 16));
+      }
+      return val;
+    },
+    async init() {
+      this.WS.sendMsg({
+        code: 40000,
+        args: {
+          day: 1
+        }
+      }).then(res => {
+        console.log(1111111111, this.dec(res));
+      });
+    },
     msg() {
       return () => {};
     },
     jump() {
       this.$router.push({ name: "todayRefall" });
     },
-    rechargeRe(){
+    rechargeRe() {
       this.$router.push({ name: "recharge" });
     },
     show() {
@@ -101,6 +135,7 @@ export default {
     }
   },
   mounted() {
+    this.init();
     let scrollBarWidth = this.$refs["scrollBar"].clientWidth;
     let fooBarWidth = this.$refs["scrollBar"].parentNode.clientWidth;
     this.timer = setInterval(() => {

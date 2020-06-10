@@ -24,11 +24,20 @@ var WBT = function (obj) {
     this.isHeartflag = true;
     console.log(e);
   }
-  // 自定义Ws消息接收函数： 服务器向前端推送消息时触发
-  this.onmessage = (e) => {
-    // 这里处理各种推送信息
-    this.handleEvent(message)
+
+  // 作为get获取数据的回调对象存储
+  this.messageList = {};
+
+  // 自定义Ws消息接收函数：服务器向前端推送消息时触发
+  this.onmessage = e => {
+    // 处理各种推送消息
+    const message = JSON.parse(e.data);
+    const code = message.code;
+    // 执行回调
+    this.messageList[code](message);
+
   }
+
   // 自定义Ws异常事件：Ws报错后触发
   this.onerror = (e) => {
     console.log('error', e);
@@ -43,6 +52,7 @@ var WBT = function (obj) {
   // 初始化websocket连接
   this.initWs()
 }
+
 // 初始化
 WBT.prototype.initWs = function () {
   window.WebSocket = window.WebSocket || window.MozWebSocket;
@@ -52,7 +62,7 @@ WBT.prototype.initWs = function () {
     return;
   }
   var that = this;
-  this.socket = new WebSocket(this.url); // 创建连接，并注册响应函数
+  this.socket = new WebSocket(this.url, "default-protocol"); // 创建连接，并注册响应函数
   this.socket.onopen = function (e) {
     that.onopen(e);
   };
@@ -72,13 +82,62 @@ WBT.prototype.initWs = function () {
 WBT.prototype.reConnect = function () {
   if (this.isReconnect) return;
   this.isReconnect = true;
+  let that = this;
   //  没链接上会一直重连，设置延迟避免请求过多
   setTimeout(function () {
-    this.initWs();
-    this.isReconnect = false;
-  }, 2000);
+    that.initWs();
+    that.isReconnect = false;
+  }, 10000);
 }
-// 处理消息
-WBT.prototype.handleEvent = function (message) {
+// 发送消息后回调或返回promise
+WBT.prototype.sendMsg = function (obj, callback) {
+  const code = obj.code;
+  let that = this;
 
+  // 返回一个promise
+  return new Promise((resolve, reject) => {
+    // 连接未成功
+    if (!this.isHeartflag) {
+      console.log('连接中……')
+    } else {
+      // 存储事件
+      this.messageList[code] = (message => {
+        try {
+          if (callback) { // 如果有回调就执行
+            callback(message);
+          }
+          resolve(message);
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+      that.socket.send(enc(JSON.stringify(obj)));
+    }
+  });
 }
+
+/**
+ * 加密
+ */
+function enc(str) {
+  let c = String.fromCharCode(str.charCodeAt(0) + str.length);
+  for (let i = 1; i < str.length; i++) {
+    c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+  }
+  return stringToHex(c);
+}
+/**
+ * 字符串转化为十六进制
+ * @param str
+ * @returns {string}
+ */
+function stringToHex(str) {
+  let val = "";
+  for (let i = 0; i < str.length; i++) {
+    if (val == "") val = str.charCodeAt(i).toString(16);
+    else val += "," + str.charCodeAt(i).toString(16);
+  }
+  return val;
+}
+export default WBT;
