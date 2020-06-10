@@ -19,36 +19,8 @@ var WBT = function (obj) {
   this.isHeartflag = false;
   // 重连状态，避免不间断的重连操作
   this.isReconnect = false;
-  // 自定义Ws 连接函数： 服务器连接成功
-  this.onopen = (e) => {
-    this.isHeartflag = true;
-    console.log(e);
-  }
-
   // 作为get获取数据的回调对象存储
   this.messageList = {};
-
-  // 自定义Ws消息接收函数：服务器向前端推送消息时触发
-  this.onmessage = e => {
-    // 处理各种推送消息
-    const message = JSON.parse(e.data);
-    const code = message.code;
-    // 执行回调
-    this.messageList[code](message);
-
-  }
-
-  // 自定义Ws异常事件：Ws报错后触发
-  this.onerror = (e) => {
-    console.log('error', e);
-    this.isHeartflag = false;
-    this.reConnect();
-  }
-  // 自定义Ws关闭事件：Ws连接关闭后触发
-  this.onclose = (e) => {
-    this.reConnect();
-    console.log('close');
-  }
   // 初始化websocket连接
   this.initWs()
 }
@@ -63,32 +35,28 @@ WBT.prototype.initWs = function () {
   }
   var that = this;
   this.socket = new WebSocket(this.url, "default-protocol"); // 创建连接，并注册响应函数
+
   this.socket.onopen = function (e) {
-    that.onopen(e);
+    console.log('连接成功');
   };
+
   this.socket.onmessage = function (e) {
-    that.onmessage(e);
+    // 解密消息
+    const message = JSON.parse(dec(e));
+    const code = message.code;
+    // 执行回调
+    that.messageList[code](message);
   };
   this.socket.onclose = function (e) {
-    that.onclose(e);
+    console.log('连接已关闭', e)
     that.socket = null;
   }
   this.socket.onerror = function (e) {
-    that.onerror(e);
+    console.log("异常警告：", e);
   }
   return this;
 }
-// 断线重连
-WBT.prototype.reConnect = function () {
-  if (this.isReconnect) return;
-  this.isReconnect = true;
-  let that = this;
-  //  没链接上会一直重连，设置延迟避免请求过多
-  setTimeout(function () {
-    that.initWs();
-    that.isReconnect = false;
-  }, 10000);
-}
+
 // 发送消息后回调或返回promise
 WBT.prototype.sendMsg = function (obj, callback) {
   const code = obj.code;
@@ -96,24 +64,23 @@ WBT.prototype.sendMsg = function (obj, callback) {
 
   // 返回一个promise
   return new Promise((resolve, reject) => {
-    // 连接未成功
-    if (!this.isHeartflag) {
-      console.log('连接中……')
-    } else {
-      // 存储事件
-      this.messageList[code] = (message => {
-        try {
-          if (callback) { // 如果有回调就执行
-            callback(message);
-          }
-          resolve(message);
-        } catch (error) {
-          reject(error);
+    // 存储事件
+    this.messageList[code] = (message => {
+      try {
+        if (callback) { // 如果有回调就执行
+          callback(message);
         }
-      });
-
+        resolve(message);
+      } catch (error) {
+        reject(error);
+      }
+    });
+    console.log('事件已储存', this);
+    waitForSocketConnection(that.socket, function () {
+      console.log("message sent!!!");
       that.socket.send(enc(JSON.stringify(obj)));
-    }
+    });
+
   });
 }
 
@@ -139,5 +106,47 @@ function stringToHex(str) {
     else val += "," + str.charCodeAt(i).toString(16);
   }
   return val;
+}
+/**
+ * 解密
+ */
+function dec(hex) {
+  let str = hexToString(hex);
+  let c = String.fromCharCode(str.charCodeAt(0) - str.length);
+  for (let i = 1; i < str.length; i++) {
+    c += String.fromCharCode(str.charCodeAt(i) - c.charCodeAt(i - 1));
+  }
+  return c;
+}
+/**
+ * 十六进制转化为字符串
+ * @param str
+ * @returns {string}
+ */
+function hexToString(str) {
+  let val = "";
+  let arr = str.data.split(",");
+  for (let i = 0; i < arr.length; i++) {
+    val += String.fromCharCode(parseInt(arr[i], 16));
+  }
+  return val;
+}
+
+function waitForSocketConnection(socket, callback) {
+  setTimeout(
+    function () {
+      if (socket.readyState === 1) {
+        console.log("Connection is made")
+        if (callback != null) {
+          callback();
+        }
+        return;
+
+      } else {
+        console.log("wait for connection...")
+        waitForSocketConnection(socket, callback);
+      }
+
+    }, 5); // wait 5 milisecond for the connection...
 }
 export default WBT;

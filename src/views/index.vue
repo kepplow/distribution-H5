@@ -104,12 +104,13 @@ export default {
     },
     async init() {
       this.WS.sendMsg({
-        code: 40000,
+        code: 1200,
         args: {
-          day: 1
+          phone: "13018266229",
+          password: '123456'
         }
       }).then(res => {
-        console.log(1111111111, this.dec(res));
+        console.log(1111111111, res);
       });
     },
     msg() {
