@@ -103,15 +103,15 @@ export default {
       return val;
     },
     async init() {
-      this.WS.sendMsg({
-        code: 1200,
-        args: {
-          phone: "13018266229",
-          password: '123456'
-        }
-      }).then(res => {
-        console.log(1111111111, res);
-      });
+      // this.WS.sendMsg({
+      //   code: 1200,
+      //   args: {
+      //     phone: "18112312313",
+      //     password: '123456'
+      //   }
+      // }).then(res => {
+      //   console.log(2, res);
+      // });
     },
     msg() {
       return () => {};

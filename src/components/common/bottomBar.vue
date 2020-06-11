@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-bar">
-    <div class="flex flex-column justify-center align-center activ my-05" @click="goto('/memberManage')">
+    <div class="flex flex-column justify-center align-center activ my-05" @click="goto('/')">
       <img src="../../assets/images/logo.png" width="20" height="20" alt="icon" />
       <div>首页</div>
     </div>

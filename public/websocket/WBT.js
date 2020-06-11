@@ -45,7 +45,11 @@ WBT.prototype.initWs = function () {
     const message = JSON.parse(dec(e));
     const code = message.code;
     // 执行回调
-    that.messageList[code](message);
+    if (that.messageList[code]) {
+      that.messageList[code](message);
+    } else {
+      console.log("找到相应函数(code：" + code + ")")
+    }
   };
   this.socket.onclose = function (e) {
     console.log('连接已关闭', e)
