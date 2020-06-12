@@ -44,9 +44,10 @@ export default {
           password: this.password
         }
       }).then(res => {
-        if (res.args.content) {
+        console.log("登录信息:", res);
+        if (res.args.uid) {
           this.show = true;
-          localStorage.setItem("Uid", res.args.content.uid);
+          localStorage.setItem("Uid", JSON.stringify(res.args.uid));
           setTimeout(() => {
             this.$router.push("/home");
           }, 500);

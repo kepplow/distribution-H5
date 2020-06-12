@@ -16,11 +16,16 @@ Vue.prototype.WS = new WS({
 // 全局路由钩子
 router.beforeEach((to, from, next) => {
   let uid = localStorage.getItem("Uid");
+  // 设置页面标题
   document.title = to.meta.title;
-  console.log('路由钩子');
-  if (!uid && to.path !== '/login') {
+  // 未登录去登录页
+  if ((!uid || uid === 'undefined') && to.path !== '/login') {
+    localStorage.removeItem("Uid");
+    document.title = '登录';
     next('/login');
   } else {
+    // 已登录记录uid
+    Vue.prototype.Uid = uid;
     next()
   }
   // next()

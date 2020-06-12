@@ -103,6 +103,7 @@ export default {
       return val;
     },
     async init() {
+      console.log(this);
       // this.WS.sendMsg({
       //   code: 1200,
       //   args: {

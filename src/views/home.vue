@@ -40,7 +40,7 @@
         <span>></span>
       </div>
     </div>
-    <van-button type="default" size="large" class="btn">
+    <van-button type="default" size="large" class="btn" @click="out">
       <img src="../assets/images/logout.png" />
       <span>退出登陆</span>
     </van-button>
@@ -59,7 +59,16 @@ export default {
   components: {
     bottomBar
   },
+  beforeMount() {
+    console.log(this.Uid);
+  },
   methods: {
+    out() {
+      localStorage.removeItem("Uid");
+      setTimeout(() => {
+        this.$router.push("/login");
+      }, 500);
+    },
     to(path) {
       this.$router.push({ name: path });
     }
@@ -99,8 +108,8 @@ export default {
     border: 0.0625rem solid black;
     border-radius: 0.625rem;
     color: black;
-    img{
-        vertical-align:middle;
+    img {
+      vertical-align: middle;
     }
   }
 }
