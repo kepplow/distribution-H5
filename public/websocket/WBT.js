@@ -45,14 +45,19 @@ WBT.prototype.initWs = function () {
     const message = JSON.parse(dec(e));
     const code = message.code;
     // 执行回调
-    that.messageList[code](message);
+    if (that.messageList[code]) {
+      that.messageList[code](message);
+    } else {
+      console.log(`回调未注册（code：${code}）`);
+    }
   };
   this.socket.onclose = function (e) {
     console.log('连接已关闭', e)
     that.socket = null;
   }
   this.socket.onerror = function (e) {
-    console.log("异常警告：", e);
+    console.log("网络异常，等待重连。。。", e);
+    this.reconnect(e);
   }
   return this;
 }
@@ -82,6 +87,11 @@ WBT.prototype.sendMsg = function (obj, callback) {
     });
 
   });
+}
+
+// 重连方法
+WBT.prototype.reconnect = function () {
+  console.log("正在重连")
 }
 
 /**

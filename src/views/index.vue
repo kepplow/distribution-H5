@@ -106,7 +106,7 @@ export default {
       this.WS.sendMsg({
         code: 1200,
         args: {
-          phone: "13018266229",
+          phone: "18112312313",
           password: '123456'
         }
       }).then(res => {
