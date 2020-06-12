@@ -16,7 +16,7 @@
         <span>微信昵称</span>
       </div>
       <div>
-        <span>你高兴就好</span>&nbsp;&nbsp;&nbsp;
+        <span>{{ name }}</span>&nbsp;&nbsp;&nbsp;
         <span>></span>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <span>手机号码</span>
       </div>
       <div>
-        <span>123****7654</span>&nbsp;&nbsp;&nbsp;
+        <span>{{ phone }}</span>&nbsp;&nbsp;&nbsp;
         <span>></span>
       </div>
     </div>
@@ -54,17 +54,23 @@ import bottomBar from "../components/common/bottomBar";
 import { Button } from "vant";
 export default {
   data() {
-    return {};
+    return {
+      phone:"",
+      name:"",
+    };
   },
   components: {
     bottomBar
   },
   beforeMount() {
-    console.log(this.Uid);
+    const user = JSON.parse(localStorage.getItem("loginInfo"));
+    this.phone = user.user.info.phone
+    this.name = user.user.info.name
   },
   methods: {
     out() {
       localStorage.removeItem("Uid");
+      localStorage.removeItem("loginInfo");
       setTimeout(() => {
         this.$router.push("/login");
       }, 500);

@@ -3,13 +3,13 @@
     <div class="title">1、玩家ID</div>
     <div>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入玩家ID" />
+        <van-field v-model="userID" placeholder="请输入玩家ID" />
       </van-cell-group>
       <div class="zhuyi">注：玩家与您绑定关系时，无法推荐其成为代理</div>
     </div>
     <div class="title">2、核对信息</div>
     <van-cell-group>
-      <van-field v-model="value" label="昵称：" />
+      <van-field v-model="nickname" label="昵称：" />
     </van-cell-group>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
   </div>
@@ -19,17 +19,27 @@
 export default {
   data() {
     return {
-      value: ""
+      userID: "",
+      nickname: ""
     };
   },
   mounted() {
-    console.log(this.value);
+
   },
-  methods:{
-      submit(){
-          console.log(this.value);
-          
+  methods: {
+    submit() {
+      if(this.userID == ""){
+        return;
       }
+      this.WS.sendMsg({
+        code: 40001,
+        args: {
+          reUid: this.userID
+        }
+      }).then(res => {
+        console.log(res);
+      });
+    }
   }
 };
 </script>

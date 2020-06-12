@@ -24,9 +24,10 @@
         class="flex relative w-auto inline-flex text-dark-second-1"
         :style="`left: ${scrollBarLeft}px`"
         ref="scrollBar"
+         @click="aa"
       >
         <span class="text-danger">喇叭icon</span>
-        <div>小贤在线发奖！！！！！！</div>
+        <div>{{ message }}</div>
       </div>
     </div>
 
@@ -35,7 +36,7 @@
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">可结算</span>
-          <span class="bg-danger font-sm px-1 py-05 around">￥0</span>
+          <span class="bg-danger font-sm px-1 py-05 around">￥{{ bean }}</span>
         </div>
         <div class="text-gray">点击进行结算 &gt;</div>
       </div>
@@ -43,7 +44,7 @@
         <div class="flex justify-around align-center">
           <span class="icon around mr-1">icon</span>
           <span class="mr-1">今日充值</span>
-          <span class="bg-danger font-sm px-1 py-05 around">￥0</span>
+          <span class="bg-danger font-sm px-1 py-05 around">￥{{ allMoney }}</span>
         </div>
         <div class="text-gray">&gt;</div>
       </div>
@@ -71,7 +72,11 @@ export default {
   data() {
     return {
       scrollBarLeft: 0,
-      timer: null
+      timer: null,
+      message: "",
+      allMoney: 0,
+      bean: 10000,
+      result: 0
     };
   },
   components: {
@@ -102,18 +107,6 @@ export default {
       }
       return val;
     },
-    async init() {
-      console.log(this);
-      // this.WS.sendMsg({
-      //   code: 1200,
-      //   args: {
-      //     phone: "18112312313",
-      //     password: '123456'
-      //   }
-      // }).then(res => {
-      //   console.log(2, res);
-      // });
-    },
     msg() {
       return () => {};
     },
@@ -134,8 +127,25 @@ export default {
         .catch(() => {
           // on cancel
         });
+    },
+    aa(){
+      this.init();
+    },
+    //初始化页面
+    async init() {
+      let that = this;
+      this.WS.sendMsg({
+        code: 40004,
+        args: {}
+      }).then(res => {
+          console.log(111,res);
+          that.allMoney = res.args.allMoney;
+          that.bean = res.args.bean;
+          that.result = res.args.result;
+        });
     }
   },
+  beforeMount() {},
   mounted() {
     this.init();
     let scrollBarWidth = this.$refs["scrollBar"].clientWidth;

@@ -48,6 +48,7 @@ export default {
         if (res.args.uid) {
           this.show = true;
           localStorage.setItem("Uid", JSON.stringify(res.args.uid));
+          localStorage.setItem("loginInfo", JSON.stringify(res.args));
           setTimeout(() => {
             this.$router.push("/home");
           }, 500);
