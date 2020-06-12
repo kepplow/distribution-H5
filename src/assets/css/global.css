@@ -611,7 +611,7 @@
     margin-right: 0;
 }
 
-.mr-5 {
+.mr-05 {
     margin-right: 0.3125rem;
 }
 
@@ -806,6 +806,10 @@
 
 .g-input-width {
     width: 80% !important;
+}
+
+.vertical-middle {
+    vertical-align: middle;
 }
 
 .g-ellipsis {
