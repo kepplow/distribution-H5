@@ -15,11 +15,17 @@ Vue.prototype.WS = new WS({
 
 // 全局路由钩子
 router.beforeEach((to, from, next) => {
+  let uid = localStorage.getItem("Uid");
   document.title = to.meta.title;
   console.log('路由钩子')
   console.log(to)
   console.log(from)
-  next()
+  if (!uid && to.path !== '/login') {
+    next('/login');
+  } else {
+    next()
+  }
+  // next()
 })
 
 new Vue({

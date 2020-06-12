@@ -11,6 +11,12 @@ const routes = [
     meta: { title: '首页' }
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "index" */ '../views/login.vue'),
+    meta: { title: '登录' }
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import(/* webpackChunkName: "index" */ '../views/home.vue'),
