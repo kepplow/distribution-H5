@@ -5,21 +5,21 @@
         <img src="../assets/images/identity.png" />
         <span>关系谱</span>
       </div>
-      <div>></div>
+      <span class="iconfont icon-jiantou mr-1"></span>
     </div>
     <div class="flex" @click="to('agentAdd')">
       <div>
         <img src="../assets/images/label.png" />
         <span>推荐代理</span>
       </div>
-      <div>></div>
+      <span class="iconfont icon-jiantou mr-1"></span>
     </div>
     <div class="flex bottom-sty">
       <div>
         <img src="../assets/images/chart.png" />
         <span>专属二维码</span>
       </div>
-      <div>></div>
+      <span class="iconfont icon-jiantou mr-1"></span>
     </div>
     <!-- bottomBar -->
     <bottomBar></bottomBar>

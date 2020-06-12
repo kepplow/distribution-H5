@@ -7,7 +7,7 @@
       </div>
       <div>
         <span>Bracke</span>&nbsp;&nbsp;&nbsp;
-        <span>></span>
+        <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
     <div class="flex">
@@ -17,7 +17,7 @@
       </div>
       <div>
         <span>{{ name }}</span>&nbsp;&nbsp;&nbsp;
-        <span>></span>
+        <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
     <div class="flex">
@@ -27,7 +27,7 @@
       </div>
       <div>
         <span>{{ phone }}</span>&nbsp;&nbsp;&nbsp;
-        <span>></span>
+        <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
     <div class="flex bottom-sty">
@@ -37,7 +37,7 @@
       </div>
       <div>
         <span>*******</span>&nbsp;&nbsp;&nbsp;
-        <span>></span>
+        <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
     <van-button type="default" size="large" class="btn" @click="out">

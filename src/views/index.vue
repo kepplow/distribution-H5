@@ -26,7 +26,7 @@
         ref="scrollBar"
          @click="aa"
       >
-        <span class="text-danger">喇叭icon</span>
+        <span class="iconfont icon-laba"></span>
         <div>{{ message }}</div>
       </div>
     </div>
@@ -34,27 +34,27 @@
     <div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="show">
         <div class="flex justify-around align-center">
-          <span class="icon around mr-1">icon</span>
+          <span class="iconfont icon-RectangleCopy around font-xl"></span>
           <span class="mr-1">可结算</span>
           <span class="bg-danger font-sm px-1 py-05 around">￥{{ bean }}</span>
         </div>
-        <div class="text-gray">点击进行结算 &gt;</div>
+        <div class="text-gray">点击进行结算 <span class="iconfont icon-jiantou"></span></div>
       </div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="jump">
         <div class="flex justify-around align-center">
-          <span class="icon around mr-1">icon</span>
+          <span class="iconfont icon-chongzhi around font-xl"></span>
           <span class="mr-1">今日充值</span>
           <span class="bg-danger font-sm px-1 py-05 around">￥{{ allMoney }}</span>
         </div>
-        <div class="text-gray">&gt;</div>
+        <div class="text-gray"><span class="iconfont icon-jiantou"></span></div>
       </div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="rechargeRe">
         <div class="flex justify-around align-center">
-          <span class="icon around mr-1">icon</span>
+          <span class="iconfont icon-yue around font-lg mx-05"></span>
           <span class="mr-1">余额充值</span>
           <!-- <span class="bg-danger font-sm px-1 py-05 around">￥0</span> -->
         </div>
-        <div class="text-gray">&gt;</div>
+        <div class="text-gray"><span class="iconfont icon-jiantou"></span></div>
       </div>
     </div>
 

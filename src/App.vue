@@ -5,7 +5,8 @@
 </template>
 
 <style lang="less">
-@import './assets/css/global.css';
+@import "./assets/css/iconfont.css";
+@import "./assets/css/global.css";
 * {
   box-sizing: border-box;
 }
@@ -14,7 +15,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-html,body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: rgb(245, 245, 245);

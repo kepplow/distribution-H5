@@ -106,7 +106,6 @@ WBT.prototype.reconnect = function () {
 function waitForSocketConnection(socket, callback) {
   // 网络差时 防止无限循环 造成内存泄漏
   if (socket.sendNum >= 100) return alert('未连接到服务器');
-  console.log(socket.sendNum);
   socket.sendNum += 1;
   setTimeout(
     function () {
