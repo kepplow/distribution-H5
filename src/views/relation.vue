@@ -2,24 +2,24 @@
   <div id="abc">
     <div class="box">
       <van-button type="primary">按加入时间排序</van-button>
-      <van-button type="primary">按加入时间排序</van-button>
+      <van-button type="primary">按下级人数排序</van-button>
 
-      <van-button type="primary">按加入时间排序</van-button>
-      <van-button type="primary">按加入时间排序</van-button>
+      <van-button type="primary">按消费金额排序</van-button>
+      <van-button type="primary">按总消费金额排序</van-button>
 
-      <van-button type="primary">按加入时间排序</van-button>
+      <van-button type="primary">按活跃度排序</van-button>
     </div>
-    <div class="detailBox" v-for="item in 3" :key="item">
+    <div class="detailBox" v-for="item in data" :key="item">
       <div class="flex">
         <div class="img">1</div>
         <div class="txt">
-          <div>名称xxxxx（ID：xxxxx）</div>
-          <div>总局数：346</div>
+          <div>{{ item.nickName }}（ID：{{ item.uid }}）</div>
+          <div>总局数：{{ item.playCards }}</div>
         </div>
       </div>
       <div class="num">
-        <div>在线</div>
-        <div>下级人数：21|34</div>
+        <div>{{ item.online ? "在线" : "不在线"}}</div>
+        <div>下级人数：{{ item.nextOnline }}|{{ item.nextAllLen }}</div>
       </div>
     </div>
   </div>
@@ -27,12 +27,29 @@
 
 <script>
 import { Button } from "vant";
-export default {};
+export default {
+  data() {
+    return {
+      data: []
+    };
+  },
+  methods: {},
+  beforeMount() {
+    let that = this;
+    this.WS.sendMsg({
+      code: 40002,
+      args: {}
+    }).then(res => {
+      console.log(111111, res);
+      that.data = res.relation;
+    });
+  }
+};
 </script>
 
 <style lang="less" scoped>
 #abc {
-    padding: 0.625rem;
+  padding: 0.625rem;
   .box {
     display: flex;
     justify-content: space-between;

@@ -14,7 +14,7 @@
       </div>
       <div>></div>
     </div>
-    <div class="flex bottom-sty">
+    <div class="flex bottom-sty" @click="getQRCode">
       <div>
         <img src="../assets/images/chart.png" />
         <span>专属二维码</span>
@@ -38,6 +38,15 @@ export default {
   methods: {
     to(path) {
       this.$router.push({ name: path });
+    },
+    getQRCode() {
+      this.WS.sendMsg({
+        code: 40003,
+        args: {}
+      }).then(res => {
+        console.log(res);
+        window.location.href = res.args.url;
+      });
     }
   }
 };
