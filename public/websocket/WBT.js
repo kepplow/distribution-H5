@@ -60,6 +60,24 @@ WBT.prototype.initWs = function () {
     console.log("网络异常，等待重连。。。", e);
     this.reconnect(e);
   }
+  // 初始化时获取账号密码登录 
+  let phone = localStorage.getItem("userPhone");
+  let password = localStorage.getItem("userPWD");
+  if (phone && phone !== 'undefined' && password && password !== 'undefined') {
+    this.sendMsg({
+      code: 1200,
+      args: {
+        phone,
+        password
+      }
+    }).then(res => {
+      if (res.args.uid) {
+        console.log('登录成功！');
+      } else {
+        console.log('登录失败', res)
+      }
+    })
+  }
   return this;
 }
 

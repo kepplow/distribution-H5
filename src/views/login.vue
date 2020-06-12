@@ -49,6 +49,8 @@ export default {
           this.show = true;
           localStorage.setItem("Uid", JSON.stringify(res.args.uid));
           localStorage.setItem("loginInfo", JSON.stringify(res.args));
+          localStorage.setItem("userPhone", this.phone);
+          localStorage.setItem("userPWD", this.password);
           setTimeout(() => {
             this.$router.push("/home");
           }, 500);
