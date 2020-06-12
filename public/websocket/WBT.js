@@ -15,9 +15,9 @@ var WBT = function (obj) {
   this.url = config.ip || protocol + host + port;
   // socket对象
   this.socket;
-  // 心跳状态，为false时不能操作 等待重连
+  // 心跳状态
   this.isHeartflag = false;
-  // 重连状态，避免不间断的重连操作
+  // 重连状态
   this.isReconnect = false;
   // 作为get获取数据的回调对象存储
   this.messageList = {};
@@ -38,6 +38,7 @@ WBT.prototype.initWs = function () {
 
   this.socket.onopen = function (e) {
     console.log('连接成功');
+    this.isReconnect = false;
   };
 
   this.socket.onmessage = function (e) {
@@ -62,11 +63,11 @@ WBT.prototype.initWs = function () {
   return this;
 }
 
-// 发送消息后回调或返回promise
+// 发送消息后     回调或返回promise
 WBT.prototype.sendMsg = function (obj, callback) {
   const code = obj.code;
   let that = this;
-
+  this.socket.sendNum = 0;
   // 返回一个promise
   return new Promise((resolve, reject) => {
     // 存储事件
@@ -80,9 +81,10 @@ WBT.prototype.sendMsg = function (obj, callback) {
         reject(error);
       }
     });
+
     console.log('事件已储存', this);
     waitForSocketConnection(that.socket, function () {
-      console.log("message sent!!!");
+      console.log("message sent!!!", obj);
       that.socket.send(enc(JSON.stringify(obj)));
     });
 
@@ -92,8 +94,35 @@ WBT.prototype.sendMsg = function (obj, callback) {
 // 重连方法
 WBT.prototype.reconnect = function () {
   console.log("正在重连")
+  if (this.isReconnect) {
+    return;
+  } else {
+    this.isReconnect = true;
+    this.initWs()
+  }
 }
 
+// 等待连接成功执行回调
+function waitForSocketConnection(socket, callback) {
+  // 网络差时 防止无限循环 造成内存泄漏
+  if (socket.sendNum >= 100) return alert('未连接到服务器');
+  console.log(socket.sendNum);
+  socket.sendNum += 1;
+  setTimeout(
+    function () {
+      if (socket.readyState === 1) {
+        console.log("Connection is made")
+        if (callback != null) {
+          callback();
+        }
+        return;
+
+      } else {
+        console.log("wait for connection...")
+        waitForSocketConnection(socket, callback);
+      }
+    }, 5); // wait 5 milisecond for the connection...
+}
 /**
  * 加密
  */
@@ -142,21 +171,4 @@ function hexToString(str) {
   return val;
 }
 
-function waitForSocketConnection(socket, callback) {
-  setTimeout(
-    function () {
-      if (socket.readyState === 1) {
-        console.log("Connection is made")
-        if (callback != null) {
-          callback();
-        }
-        return;
-
-      } else {
-        console.log("wait for connection...")
-        waitForSocketConnection(socket, callback);
-      }
-
-    }, 5); // wait 5 milisecond for the connection...
-}
 export default WBT;

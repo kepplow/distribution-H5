@@ -17,9 +17,7 @@ Vue.prototype.WS = new WS({
 router.beforeEach((to, from, next) => {
   let uid = localStorage.getItem("Uid");
   document.title = to.meta.title;
-  console.log('路由钩子')
-  console.log(to)
-  console.log(from)
+  console.log('路由钩子');
   if (!uid && to.path !== '/login') {
     next('/login');
   } else {

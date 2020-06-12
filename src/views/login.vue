@@ -20,6 +20,9 @@
         <van-button round block type="info" native-type="submit">登录</van-button>
       </div>
     </van-form>
+    <van-popup v-model="show">
+      <div class="py-1 px-2 around">登录成功</div>
+    </van-popup>
   </div>
 </template>
 
@@ -27,6 +30,7 @@
 export default {
   data() {
     return {
+      show: false,
       phone: "18112312313",
       password: "123456"
     };
@@ -40,9 +44,12 @@ export default {
           password: this.password
         }
       }).then(res => {
-        console.log(111, res);
-        if (true) {
-          this.$router.push("/");
+        if (res.args.content) {
+          this.show = true;
+          localStorage.setItem("Uid", res.args.content.uid);
+          setTimeout(() => {
+            this.$router.push("/home");
+          }, 500);
         }
       });
     }
