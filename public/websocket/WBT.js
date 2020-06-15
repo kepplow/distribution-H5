@@ -58,7 +58,7 @@ WBT.prototype.initWs = function () {
   }
   this.socket.onerror = function (e) {
     console.log("网络异常，等待重连。。。", e);
-    this.reconnect(e);
+    that.reconnect(e);
   }
   // 初始化时获取账号密码登录
   let phone = localStorage.getItem("userPhone");
