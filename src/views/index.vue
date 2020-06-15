@@ -24,7 +24,7 @@
         class="flex relative w-auto inline-flex text-dark-second-1"
         :style="`left: ${scrollBarLeft}px`"
         ref="scrollBar"
-         @click="aa"
+        @click="aa"
       >
         <span class="iconfont icon-laba"></span>
         <div>{{ message }}</div>
@@ -38,7 +38,10 @@
           <span class="mr-1">可结算</span>
           <span class="bg-danger font-sm px-1 py-05 around">￥{{ bean }}</span>
         </div>
-        <div class="text-gray">点击进行结算 <span class="iconfont icon-jiantou"></span></div>
+        <div class="text-gray">
+          点击进行结算
+          <span class="iconfont icon-jiantou"></span>
+        </div>
       </div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="jump">
         <div class="flex justify-around align-center">
@@ -46,7 +49,9 @@
           <span class="mr-1">今日充值</span>
           <span class="bg-danger font-sm px-1 py-05 around">￥{{ allMoney }}</span>
         </div>
-        <div class="text-gray"><span class="iconfont icon-jiantou"></span></div>
+        <div class="text-gray">
+          <span class="iconfont icon-jiantou"></span>
+        </div>
       </div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="rechargeRe">
         <div class="flex justify-around align-center">
@@ -54,7 +59,9 @@
           <span class="mr-1">余额充值</span>
           <!-- <span class="bg-danger font-sm px-1 py-05 around">￥0</span> -->
         </div>
-        <div class="text-gray"><span class="iconfont icon-jiantou"></span></div>
+        <div class="text-gray">
+          <span class="iconfont icon-jiantou"></span>
+        </div>
       </div>
     </div>
 
@@ -128,7 +135,7 @@ export default {
           // on cancel
         });
     },
-    aa(){
+    aa() {
       this.init();
     },
     //初始化页面
@@ -138,14 +145,18 @@ export default {
         code: 40004,
         args: {}
       }).then(res => {
-          console.log(111,res);
-          that.allMoney = res.args.allMoney;
-          that.bean = res.args.bean;
-          that.result = res.args.result;
-        });
+        console.log(111, res);
+        that.allMoney = res.args.allMoney;
+        that.bean = res.args.bean;
+        that.result = res.args.result;
+      });
     }
   },
-  beforeMount() {},
+  beforeMount() {
+    this.WS.bind("1313", function(message) {
+      console.log(message);
+    });
+  },
   mounted() {
     this.init();
     let scrollBarWidth = this.$refs["scrollBar"].clientWidth;
