@@ -127,6 +127,9 @@ export default {
   },
   beforeMount() {
     let info = JSON.parse(localStorage.getItem("loginInfo"));
+    this.WS.bind("1313", function(message) {
+      console.log(message);
+    });
   },
   mounted() {
     this.init();
