@@ -1,14 +1,15 @@
 <template>
   <div id="abc">
-    <div class="box">
-      <van-button type="primary">按加入时间排序</van-button>
-      <van-button type="primary">按下级人数排序</van-button>
+    <van-search v-model="search" show-action placeholder="请输入搜索关键词" @search="onSearch">
+      <template #action>
+        <div @click="onSearch" style="color:green">搜索</div>
+      </template>
+    </van-search>
 
-      <van-button type="primary">按消费金额排序</van-button>
-      <van-button type="primary">按总消费金额排序</van-button>
+    <van-dropdown-menu active-color="green">
+      <van-dropdown-item v-model="sort" :options="sortOption" />
+    </van-dropdown-menu>
 
-      <van-button type="primary">按活跃度排序</van-button>
-    </div>
     <div class="detailBox" v-for="item in data" :key="item">
       <div class="flex">
         <div class="img">1</div>
@@ -27,13 +28,28 @@
 
 <script>
 import { Button } from "vant";
+import { DropdownMenu, DropdownItem, Search } from "vant";
+
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      search: "",
+      sort: 0,
+      sortOption: [
+        { text: "按加入时间排序", value: 0 },
+        { text: "按下级人数排序", value: 1 },
+        { text: "按消费金额排序", value: 2 },
+        { text: "按总消费金额排序", value: 3 },
+        { text: "按活跃度排序", value: 4 }
+      ]
     };
   },
-  methods: {},
+  methods: {
+    onSearch() {
+      console.log(this.search);
+    }
+  },
   beforeMount() {
     let that = this;
     this.WS.sendMsg({
@@ -48,6 +64,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#abc > * {
+  margin-top: 10px;
+}
 #abc {
   padding: 0.625rem;
   .box {

@@ -1,22 +1,10 @@
 <template>
-  <div>
-    <div class="box">
-      <div class="ret" @click="toIndexPage">
-        <div>
-          <img src="../assets/images/arrow.png" />
-        </div>
-      </div>
-      <div class="search">
-        <div>
-          <img src="../assets/images/search.png" />
-        </div>
-      </div>
-    </div>
-    <van-field v-model="value" center clearable placeholder="搜索" style="padding:5px 5px">
-      <template #button>
-        <van-button size="small" type="primary">搜索</van-button>
+  <div class="box">
+    <van-search v-model="search" show-action placeholder="请输入搜索关键词" @search="onSearch">
+      <template #action>
+        <div @click="onSearch" style="color:green">搜索</div>
       </template>
-    </van-field>
+    </van-search>
 
     <div class="title">
       <div>
@@ -42,10 +30,12 @@
 </template>
 
 <script>
+import { Search } from "vant";
+
 export default {
   data() {
     return {
-      value:'',
+      search: "",
       list: [
         {
           friend: "我的亲友圈A",
@@ -69,6 +59,9 @@ export default {
     };
   },
   methods: {
+    onSearch() {
+      console.log(this.search);
+    },
     toIndexPage() {
       this.$router.go(-1);
     }
@@ -77,43 +70,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.box > * {
+  padding: 10px;
+}
 .box {
-  display: flex;
-  border-top: 0.0625rem solid rgb(230, 230, 230);
-  margin-top: 1.25rem;
-  font-weight: 500;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  .ret {
-    border-right: 0.0625rem solid rgb(230, 230, 230);
+  .title {
+    display: flex;
     width: 100%;
-    padding: 0.9375rem 0rem;
-    text-align: center;
+    height: 4.375rem;
+    background-color: rgb(40, 166, 155);
+    color: white;
+    div {
+      text-align: left;
+      width: 33.33%;
+      padding-left: 1.25rem;
+    }
   }
-  .search {
-    width: 100%;
-    padding: 0.9375rem 0rem;
-    text-align: center;
+  .dispaly {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgb(225, 225, 225);
   }
-  h5 {
-    margin: 0;
-  }
-}
-
-.title {
-  display: flex;
-  width: 100%;
-  height: 4.375rem;
-  background-color: rgb(40, 166, 155);
-  color: white;
-  div {
-    text-align: left;
-    width: 33.33%;
-    line-height: 4.375rem;
-    padding-left: 1.25rem;
-  }
-}
-.dispaly {
-  padding: 1.25rem 0;
-  border-bottom: 1px solid rgb(225, 225, 225);
 }
 </style>
