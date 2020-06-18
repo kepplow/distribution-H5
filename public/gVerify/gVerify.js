@@ -3,7 +3,7 @@
     this.options = { // 默认options参数值
       id: "", // 容器Id
       canvasId: "verifyCanvas", // canvas的ID
-      width: "100", // 默认canvas宽度
+      width: "120", // 默认canvas宽度
       height: "30", // 默认canvas高度
       type: "blend", // 图形验证码默认类型blend:数字字母混合类型、number:纯数字、letter:纯字母
       code: ""
@@ -32,7 +32,7 @@
     _init: function () {
       var con = document.getElementById(this.options.id);
       var canvas = document.createElement("canvas");
-      this.options.width = con.offsetWidth > 0 ? con.offsetWidth : "100";
+      this.options.width = con.offsetWidth > 0 ? con.offsetWidth : "120";
       this.options.height = con.offsetHeight > 0 ? con.offsetHeight : "30";
       canvas.id = this.options.canvasId;
       canvas.width = this.options.width;
@@ -41,9 +41,9 @@
       canvas.innerHTML = "您的浏览器版本不支持canvas";
       con.appendChild(canvas);
       var parent = this;
-      canvas.onclick = function () {
-        parent.refresh();
-      }
+      // canvas.onclick = function () {
+      //   parent.refresh();
+      // }
     },
 
     /** 生成验证码* */
@@ -68,22 +68,24 @@
       } else {
         var txtArr = this.options.letterArr;
       }
+      let haveCode = this.options.code.length;
 
-      for (var i = 1; i <= 4; i++) {
+      for (var i = 1; haveCode ? i <= haveCode : i <= 4; i++) {
         var txt = '';
-        if (this.options.code) {
-          txt = this.options.code
+        if (haveCode) {
+          txt = this.options.code[i - 1]
         } else {
           txt = txtArr[randomNum(0, txtArr.length)];
+          this.options.code += txt;
         }
-        this.options.code += txt;
-        ctx.font = randomNum(this.options.height / 2, this.options.height) + 'px SimHei'; // 随机生成字体大小
+
+        ctx.font = randomNum(this.options.height / 3, this.options.height) + 'px SimHei'; // 随机生成字体大小
         ctx.fillStyle = randomColor(50, 160); // 随机生成字体颜色
         ctx.shadowOffsetX = randomNum(-3, 3);
         ctx.shadowOffsetY = randomNum(-3, 3);
         ctx.shadowBlur = randomNum(-3, 3);
         ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-        var x = this.options.width / 5 * i;
+        var x = this.options.width / 7 * i;
         var y = this.options.height / 2;
         var deg = randomNum(-30, 30);
         /** 设置旋转角度和坐标原点* */

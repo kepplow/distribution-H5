@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
   // 设置页面标题
   document.title = to.meta.title;
   // 未登录去登录页
-  if ((!uid || uid === 'undefined') && to.path !== '/login') {
+  if ((!uid || uid === 'undefined') && '/login /register'.indexOf(to.path) === -1) {
     localStorage.removeItem("Uid");
     document.title = '登录';
     next('/login');

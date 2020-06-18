@@ -3,30 +3,43 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'index',
     component: () => import('../views/index.vue'),
-    meta: { title: '首页' }
+    meta: {
+      title: '首页'
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "index" */ '../views/login.vue'),
-    meta: { title: '登录' }
+    component: () => import('../views/login.vue'),
+    meta: {
+      title: '登录'
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/register.vue'),
+    meta: {
+      title: '注册'
+    }
   },
   {
     path: '/home',
     name: 'home',
-    component: () => import(/* webpackChunkName: "index" */ '../views/home.vue'),
-    meta: { title: '个人中心' }
+    component: () => import('../views/home.vue'),
+    meta: {
+      title: '个人中心'
+    }
   },
   {
     path: '/memberManage',
     name: 'memberManage',
     component: () => import('../views/memberManage.vue'),
-    meta:{
+    meta: {
       title: '成员管理'
     }
   },
@@ -34,7 +47,7 @@ const routes = [
     path: '/relatives',
     name: 'relatives',
     component: () => import('../views/relatives.vue'),
-    meta:{
+    meta: {
       title: '亲友圈'
     }
   },
@@ -42,7 +55,7 @@ const routes = [
     path: '/chargeCard',
     name: 'chargeCard',
     component: () => import('../views/chargeCard.vue'),
-    meta:{
+    meta: {
       title: '充卡'
     }
   },
@@ -50,7 +63,7 @@ const routes = [
     path: '/tableList',
     name: 'tableList',
     component: () => import('../views/tableList.vue'),
-    meta:{
+    meta: {
       title: '桌子列表'
     }
   },
@@ -58,7 +71,7 @@ const routes = [
     path: '/relativesRecord',
     name: 'relativesRecord',
     component: () => import('../views/relativesRecord.vue'),
-    meta:{
+    meta: {
       title: '亲友圈战绩'
     }
   },
@@ -66,7 +79,7 @@ const routes = [
     path: '/chart',
     name: 'chart',
     component: () => import('../views/chart.vue'),
-    meta:{
+    meta: {
       title: '收入统计'
     }
   },
@@ -74,7 +87,7 @@ const routes = [
     path: '/todayRefall',
     name: 'todayRefall',
     component: () => import('../views/todayRefall.vue'),
-    meta:{
+    meta: {
       title: '今日充值'
     }
   },
@@ -82,7 +95,7 @@ const routes = [
     path: '/recharge',
     name: 'recharge',
     component: () => import('../views/recharge.vue'),
-    meta:{
+    meta: {
       title: '余额充值'
     }
   },
@@ -90,7 +103,7 @@ const routes = [
     path: '/relation',
     name: 'relation',
     component: () => import('../views/relation.vue'),
-    meta:{
+    meta: {
       title: '关系谱'
     }
   },
@@ -98,7 +111,7 @@ const routes = [
     path: '/agentAdd',
     name: 'agentAdd',
     component: () => import('../views/agentAdd.vue'),
-    meta:{
+    meta: {
       title: '推荐代理'
     }
   },
@@ -149,7 +162,7 @@ const routes = [
     meta: {
       title: '充值记录'
     }
-  }, 
+  },
   {
     path: '/partnerRecord',
     name: 'partnerRecord',

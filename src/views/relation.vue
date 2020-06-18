@@ -54,7 +54,7 @@ export default {
     let that = this;
     this.WS.sendMsg({
       code: 40002,
-      args: {}
+      args: { startIndex: 0, endIndex: 20, type: "1" }
     }).then(res => {
       console.log(111111, res);
       that.data = res.relation;

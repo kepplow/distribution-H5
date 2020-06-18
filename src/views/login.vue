@@ -28,11 +28,11 @@
           class="mt-1"
           :rules="[{ required: true, message: '请填写验证码' }]"
         />
-        <div id="picyzm" class="mt-1 ml-1"></div>
+        <div id="picyzm" class="mt-1 ml-1" @click.stop="refeshCode"></div>
       </div>
 
       <div class="flex justify-end">
-        <button class="btn btn-link">注册</button>
+        <button class="btn btn-link" @click="goto('/register')">注册</button>
         <button class="btn btn-link">忘记密码</button>
       </div>
       <div style="margin: 16px;">
@@ -40,7 +40,7 @@
       </div>
     </van-form>
     <van-popup v-model="show">
-      <div class="py-1 px-2 around">登录成功</div>
+      <div class="py-1 px-2 around">{{msg}}</div>
     </van-popup>
   </div>
 </template>
@@ -50,42 +50,54 @@ import "../../public/gVerify/gVerify";
 export default {
   data() {
     return {
+      msg: "",
       show: false,
-      phone: "18112312313",
+      phone: "18114714714",
       password: "123456",
       Vcode: "",
-      TCode: "abcd",
+      TCode: "123456",
       verifyCode: null
     };
   },
   methods: {
+    goto(path) {
+      this.$router.push({ path });
+    },
+    refeshCode(e) {
+      this.verifyCode.options.code = "1234";
+      this.verifyCode.refresh();
+      return false;
+    },
     onSubmit() {
       let res = this.verifyCode.validate(this.Vcode);
 
       if (res) {
-        console.log(1111, this.Vcode);
+        this.WS.sendMsg({
+          code: 1200,
+          args: {
+            phone: this.phone,
+            password: this.password,
+            type: "agent"
+          }
+        }).then(res => {
+          console.log("登录信息:", res);
+          if (res.args.uid) {
+            this.msg = "登录成功！";
+            this.show = true;
+            localStorage.setItem("Uid", JSON.stringify(res.args.uid));
+            localStorage.setItem("loginInfo", JSON.stringify(res.args));
+            localStorage.setItem("userPhone", this.phone);
+            localStorage.setItem("userPWD", this.password);
+            setTimeout(() => {
+              this.$router.push("/home");
+            }, 500);
+          }
+        });
       } else {
-        console.log(2222, this.Vcode);
+        this.msg = "验证码错误！";
+        this.show = true;
+        return;
       }
-      // this.WS.sendMsg({
-      //   code: 1200,
-      //   args: {
-      //     phone: this.phone,
-      //     password: this.password
-      //   }
-      // }).then(res => {
-      //   console.log("登录信息:", res);
-      //   if (res.args.uid) {
-      //     this.show = true;
-      //     localStorage.setItem("Uid", JSON.stringify(res.args.uid));
-      //     localStorage.setItem("loginInfo", JSON.stringify(res.args));
-      //     localStorage.setItem("userPhone", this.phone);
-      //     localStorage.setItem("userPWD", this.password);
-      //     setTimeout(() => {
-      //       this.$router.push("/home");
-      //     }, 500);
-      //   }
-      // });
     }
   },
   mounted() {

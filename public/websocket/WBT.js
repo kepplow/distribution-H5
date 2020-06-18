@@ -68,7 +68,8 @@ WBT.prototype.initWs = function () {
       code: 1200,
       args: {
         phone,
-        password
+        password,
+        type: 'agent'
       }
     }).then(res => {
       if (res.args.uid) {
