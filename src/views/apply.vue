@@ -3,7 +3,7 @@
     <div class="seach">
       <van-field v-model="name" center clearable placeholder="姓名">
         <template #button>
-          <van-button size="small" type="primary">搜索</van-button>
+          <van-button size="small" type="primary" @click="search">搜索</van-button>
         </template>
       </van-field>
     </div>
@@ -24,22 +24,22 @@
     <div class="dispaly" v-for="(i,v) of list" :key="v">
       <van-row gutter="20" type="flex" justify="space-around">
         <van-col span="13">
-          <span>{{i.friend}}</span>
+          <span>{{i.name}}</span>
           <br />
-          <span>ID:{{i.id}}</span>
+          <span>ID:{{i.familyId}}</span>
         </van-col>
         <van-col span="7">
-          <span class="cen">{{i.applyName}}</span>
+          <span class="cen">{{i.wx_name}}</span>
         </van-col>
         <van-col span="12">
-          <span>{{i.time}}</span>
+          <span>{{i.send_time}}</span>
         </van-col>
         <van-col span="15">
           <span v-if="i.state == 1" style="color:green">已同意</span>
           <span v-if="i.state == 2" style="color:red">已拒绝</span>
           <span v-if="i.state == 3">
-            <van-button type="primary" size="mini">同意</van-button>
-            <van-button type="danger" size="mini">拒绝</van-button>
+            <van-button type="primary" size="mini" @click="action(1)">同意</van-button>
+            <van-button type="danger" size="mini" @click="action(2)">拒绝</van-button>
           </span>
         </van-col>
       </van-row>
@@ -53,31 +53,59 @@ import { Button } from "vant";
 export default {
   data() {
     return {
-      name:'',
-      list: [
-        {
-          friend: "我的亲友圈A",
-          id: 2336266,
-          applyName: "张三",
-          time: "2020-04-05 12:33:20",
-          state: 1
-        },
-        {
-          friend: "我的亲友圈B",
-          id: 2336266,
-          applyName: "张三",
-          time: "2020-04-05 12:33:20",
-          state: 2
-        },
-        {
-          friend: "我的亲友圈B",
-          id: 2336266,
-          applyName: "张三",
-          time: "2020-04-05 12:33:20",
-          state: 3
-        }
-      ]
+      name: "",
+      list: [],
+      page: {
+        pageNum: 1,
+        pageSize: 10
+      }
     };
+  },
+  methods: {
+    search() {
+      this.list = [];
+      this.initPage(this.page.pageNum, this.page.pageSize, this.name);
+    },
+    initPage(pageNum = this.page.pageNum, pageSize = this.page.pageSize, name) {
+      let data = {
+        code: 30126,
+        args: {
+          uid: this.Uid,
+          pageNum: pageNum,
+          pageSize: pageSize
+        }
+      };
+      if (name) {
+        data.args.name = name;
+      }
+      this.WS.sendMsg(data).then(res => {
+        console.log(res);
+        res.args.data.forEach(ele => {
+          this.list.push(ele);
+        });
+      });
+    },
+    nextPage() {
+      this.page.pageNum++;
+      this.initPage(this.page.pageNum, this.page.pageSize, this.name);
+    },
+    action(state) {
+      let data = {
+        code: 30103,
+        args: {
+          uid: this.Uid,
+          noticeId: "",
+          state: state
+        }
+      };
+      this.WS.sendMsg(data).then(res => {
+        console.log(res);
+      });
+    }
+  },
+  mounted() {
+    this.initPage();
+    console.log(this.list);
   }
 };
 </script>

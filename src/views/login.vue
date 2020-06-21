@@ -52,7 +52,7 @@ export default {
     return {
       msg: "",
       show: false,
-      phone: "18114714714",
+      phone: "18379460084",
       password: "123456",
       Vcode: "",
       TCode: "123456",

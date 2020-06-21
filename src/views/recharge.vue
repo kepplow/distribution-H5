@@ -25,17 +25,7 @@ import { Dialog } from "vant";
 export default {
   data() {
     return {
-      list: [
-        { roomCard: "6.0", give: 0, price: 6, color: "green", extra: "" },
-        { roomCard: "6.0", give: 0, price: 6, color: "blue", extra: "" },
-        {
-          roomCard: "6.0",
-          give: 0,
-          price: 6,
-          color: "orange",
-          extra: "送900麻将专卡"
-        }
-      ]
+      list: []
     };
   },
   beforeMount() {

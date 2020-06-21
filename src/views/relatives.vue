@@ -3,7 +3,14 @@
     <div class="flex justify-between align-center ml-2 py-1 border-bottom" @click="goto('bindID')">
       <div class>
         <span class="iconfont icon-IDcard font-xl vertical-middle mr-1"></span>
-        <span>绑定圈主id</span>
+        <span>添加亲友圈成员</span>
+      </div>
+      <span class="iconfont icon-jiantou mr-1"></span>
+    </div>
+    <div class="flex justify-between align-center ml-2 py-1 border-bottom" @click="goto('bindIDList')">
+      <div class>
+        <span class="iconfont icon-IDcard font-xl vertical-middle mr-1"></span>
+        <span>亲友圈列表</span>
       </div>
       <span class="iconfont icon-jiantou mr-1"></span>
     </div>
