@@ -61,7 +61,7 @@
 import { Form } from "vant";
 import { Pagination } from "vant";
 import { Dialog } from "vant";
-
+import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -169,12 +169,12 @@ export default {
       })
         .then(() => {
           let data = { code: 30130, args: {} };
-          data.args.is_lock = row.is_lock == 1 ? 0 : 1;
-          data.args.uid = that.Uid;
-          data.args.id = row.id;
+          data.args.is_lock = row.is_lock == 1 ? "0" : "1"; 
+          data.args.uid = that.Uid.toString();
+          data.args.id = row.id.toString();
           console.log(data);
-          that.sendMsg(data).then(res => {
-            console.log(res);
+          that.WS.sendMsg(data).then(res => {
+            Toast(res.args.msg);
           });
         })
         .catch(() => {
