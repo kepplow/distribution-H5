@@ -3,33 +3,20 @@
     <div>
       <h3>1：玩家ID</h3>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入玩家ID" />
+        <van-field v-model="userId" placeholder="请输入玩家ID" />
       </van-cell-group>
     </div>
     <div>
       <h3>2：玩家昵称</h3>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入玩家昵称" />
+        <van-field v-model="nickName" placeholder="请输入玩家昵称" />
       </van-cell-group>
     </div>
     <div>
       <h3>3：请选择自己的亲友圈</h3>
-      <van-field
-        readonly
-        clickable
-        name="picker"
-        :value="value"
-        placeholder="请选择自己的亲友圈"
-        @click="showPicker = true"
-      />
-      <van-popup v-model="showPicker" position="bottom">
-        <van-picker
-          show-toolbar
-          :columns="columns"
-          @confirm="onConfirm"
-          @cancel="showPicker = false"
-        />
-      </van-popup>
+      <van-dropdown-menu active-color="green">
+        <van-dropdown-item v-model="fraend" :options="columns" />
+      </van-dropdown-menu>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定转让</van-button>
   </div>
@@ -37,11 +24,16 @@
 
 <script>
 import { Field } from "vant";
+import { DropdownMenu, DropdownItem } from "vant";
+import { Toast } from "vant";
+
 export default {
   data() {
     return {
-      value: "",
-      columns: ["亲友圈1", "亲友圈2", "亲友圈3", "亲友圈4", "亲友圈5"],
+      userId: "",
+      nickName: "",
+      fraend: 0,
+      columns: [],
       showPicker: false
     };
   },
@@ -50,9 +42,50 @@ export default {
       this.value = value;
       this.showPicker = false;
     },
-    submit(){
-
+    submit() {
+      if (!this.userId) {
+        Toast("请输入玩家ID");
+        return;
+      }
+      if (!this.nickName) {
+        Toast("请输入玩家昵称");
+        return;
+      }
+      if (this.fraend == 0) {
+        Toast("请选择亲友圈");
+        return;
+      }
+      this.WS.sendMsg({
+        code: 30132,
+        args: {
+          uid: this.Uid,
+          playerId: this.userId,
+          name: this.nickName,
+          familyId: this.fraend
+        }
+      }).then(res => {
+        Toast(res.args.msg);
+      });
+    },
+    initList() {
+      this.WS.sendMsg({ code: 30123, args: { uid: this.Uid } }).then(res => {
+        res.args.data.forEach(ele => {
+          let ar = {
+            text: ele.name,
+            value: ele.id
+          };
+          this.columns.push(ar);
+        });
+      });
     }
+  },
+  mounted() {
+    this.columns = [];
+    this.columns.push({
+      text: "请选择自己的亲友圈",
+      value: 0
+    });
+    this.initList();
   }
 };
 </script>

@@ -1,5 +1,20 @@
 <template>
   <div class="index">
+    <div class="head">
+      <div class="top">
+        <div class="img">
+          <!-- <img src="../assets/images/head.png" /> -->
+          <img :src="headPic" />
+        </div>
+        <div class="text">
+          <div>昵称：{{ nickname }}</div>
+          <div>我的ID：{{ myID }}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <van-notice-bar left-icon="volume-o" :scrollable="true" :text="notice" />
+    </div>
     <div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="show">
         <div class="flex justify-around align-center">
@@ -42,6 +57,7 @@
 <script>
 import bottomBar from "../components/common/bottomBar.vue";
 import { Dialog } from "vant";
+import { NoticeBar } from "vant";
 
 export default {
   name: "index",
@@ -55,9 +71,10 @@ export default {
       myID: 0,
       nickname: "",
       notice: "",
-      headPic: ""
+      headPic: require("../assets/images/head.png")
     };
   },
+
   components: {
     bottomBar
   },
@@ -119,14 +136,18 @@ export default {
         args: {}
       }).then(res => {
         console.log(111, res);
-        that.allMoney = res.args.allMoney;
-        that.bean = res.args.bean;
+        that.allMoney = res.args.allMoney || 0;
+        that.bean = res.args.bean || 0;
         that.result = res.args.result;
       });
     }
   },
   beforeMount() {
     let info = JSON.parse(localStorage.getItem("loginInfo"));
+    this.nickname = info.user.info.name;
+    this.myID = info.uid;
+    this.notice = info.content.notice;
+    // this.headPic = info.user.info.headPic;
     this.WS.bind("1313", function(message) {
       console.log(message);
     });
@@ -139,6 +160,35 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.head {
+  width: 90%;
+  margin: 10px;
+  .top {
+    display: flex;
+    width: 100%;
+    height: 100px;
+    .img {
+      width: 100px;
+      height: 100px;
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+      }
+    }
+    .text {
+      width: 100%;
+      height: 100px;
+      margin: 10px;
+      div {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+      }
+    }
+  }
+}
 .index {
   .inline-flex {
     display: inline-flex;

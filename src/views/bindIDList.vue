@@ -33,7 +33,7 @@
             {{ i.join_time }}
           </td>
           <td>
-            <a @click="see">查看亲友圈</a>
+            <a @click="see(row)">查看亲友圈</a>
           </td>
         </tr>
       </table>
@@ -80,6 +80,9 @@ export default {
           this.list.push(ele)
         })
       });
+    },
+    see(){
+
     }
   },
   mounted() {

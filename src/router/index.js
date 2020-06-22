@@ -145,7 +145,7 @@ const routes = [{
   name: 'cardReffRecord',
   component: () => import('../views/cardReffRecord.vue'),
   meta: {
-    title: '冲卡记录'
+    title: '充卡记录'
   }
 },
 {
@@ -178,6 +178,14 @@ const routes = [{
   component: () => import('../views/partnerRecord.vue'),
   meta: {
     title: '合伙人充值记录'
+  }
+},
+{
+  path: '/fatigue',
+  name: 'fatigue',
+  component: () => import('../views/fatigue.vue'),
+  meta: {
+    title: '疲劳管理'
   }
 }
 ]

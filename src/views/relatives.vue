@@ -66,6 +66,17 @@
     </div>
     <div
       class="flex justify-between align-center ml-2 py-1 border-bottom"
+      @click="goto('fatigue')"
+    >
+      <div class>
+        <span class="iconfont icon-chengyuanliebiao font-lg vertical-middle mr-2"></span>
+
+        <span>疲劳管理</span>
+      </div>
+      <span class="iconfont icon-jiantou mr-1"></span>
+    </div>
+    <div
+      class="flex justify-between align-center ml-2 py-1 border-bottom"
       @click="goto('/relativesRecord')"
     >
       <div class>
