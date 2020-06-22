@@ -33,7 +33,7 @@
             {{ i.join_time }}
           </td>
           <td>
-            <a @click="see(row)">查看亲友圈</a>
+            <a @click="see(i)">查看亲友圈</a>
           </td>
         </tr>
       </table>
@@ -81,8 +81,8 @@ export default {
         })
       });
     },
-    see(){
-
+    see(row){
+        this.$router.push({path:`/memberList`,query:{row:row}});
     }
   },
   mounted() {
