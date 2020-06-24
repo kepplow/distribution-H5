@@ -6,13 +6,10 @@
           <span>时间</span>
         </div>
         <div>
-          <span>关系</span>
+          <span>类型</span>
         </div>
         <div>
           <span>充值总额</span>
-        </div>
-        <div>
-          <span>返利</span>
         </div>
         <div>
           <span>合伙人提成</span>
@@ -28,9 +25,6 @@
           </van-col>
           <van-col span="6">
             <span>{{i.quota}}</span>
-          </van-col>
-          <van-col span="6">
-            <span>{{i.rebate}}</span>
           </van-col>
           <van-col span="6">
             <span>{{i.commission}}</span>

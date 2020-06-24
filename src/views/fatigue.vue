@@ -51,13 +51,13 @@
 
 <script>
 import { DatetimePicker } from "vant";
-import { Toast } from 'vant';
+import { Toast } from "vant";
 
 export default {
   data() {
     return {
       form: {
-        id:"",
+        id: "",
         time: "", //时间警告值
         cardratio: "", //:耗卡比
         fraction: "", //最佳场次线
@@ -93,8 +93,7 @@ export default {
   methods: {
     Submit() {
       let prams = { code: 30121, args: { uid: this.Uid } };
-      let that = this;
-      this.WS.bind(30123, res => {
+      this.WS.sendMsg(prams).then(res => {
         console.log(res);
         res.args.data.forEach(ele => {
           that.gameTypeList.forEach(e => {
@@ -105,7 +104,6 @@ export default {
           that.list.push(ele);
         });
       });
-      this.WS.sendMsg(prams);
     },
     action(row) {
       this.form.id = row.id;
@@ -120,27 +118,27 @@ export default {
         this.form.time = 0;
       }
       if (!this.form.cardratio) {
-        Toast('请填写耗卡比');
+        Toast("请填写耗卡比");
         return;
       }
       if (!this.form.fraction) {
-        Toast('请填写最佳场次统计线');
+        Toast("请填写最佳场次统计线");
         return;
       }
       if (!this.form.warning) {
-        Toast('请填写疲劳值 ');
+        Toast("请填写疲劳值 ");
         return;
       }
-      let data = {code:30122,args: { uid: this.Uid }}
-      data.args.id = this.form.id
-      data.args.time = this.form.time
-      data.args.warning = this.form.warning
-      data.args.cardratio = this.form.cardratio
-      data.args.fraction = this.form.fraction
+      let data = { code: 30122, args: { uid: this.Uid } };
+      data.args.id = this.form.id;
+      data.args.time = this.form.time;
+      data.args.warning = this.form.warning;
+      data.args.cardratio = this.form.cardratio;
+      data.args.fraction = this.form.fraction;
       this.WS.sendMsg(data).then(res => {
         Toast(res.args.msg);
         this.show = false;
-      })
+      });
     }
   },
   mounted() {},
