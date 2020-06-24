@@ -8,7 +8,7 @@
             <th>耗卡比</th>
             <th>最佳场次线</th>
             <th>游戏</th>
-            <th>输分警告</th>
+            <th>疲劳值</th>
             <th>时间警告</th>
             <th>操作</th>
           </tr>
@@ -39,7 +39,7 @@
         <h5 style="color:rgb(200,200,200);margin-left:20px">提示：超过多少时间会锁定。设置为0代表没有警告,默认为0</h5>
         <van-field v-model="form.cardratio" name="耗卡比" label="耗卡比" placeholder="耗卡比" />
         <van-field v-model="form.fraction" name="最佳场次统计线" label="最佳场次统计线" placeholder="最佳场次统计线" />
-        <van-field v-model="form.warning" name="输分警告值" label="输分警告值" placeholder="输分警告值" />
+        <van-field v-model="form.warning" name="疲劳值" label="疲劳值" placeholder="疲劳值" />
         <div class="btndiv">
           <van-button color="#7232dd" plain @click="actionSubmit">提交</van-button>
           <van-button color="orange" plain @click="show = false">取消</van-button>
@@ -128,7 +128,7 @@ export default {
         return;
       }
       if (!this.form.warning) {
-        Toast('请填写输分警告值');
+        Toast('请填写疲劳值 ');
         return;
       }
       let data = {code:30122,args: { uid: this.Uid }}

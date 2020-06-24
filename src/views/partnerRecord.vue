@@ -1,82 +1,100 @@
 <template>
-  <div>
-    <div class="title">
-      <div>
-        <span>时间</span>
+  <div class="box">
+    <div>
+      <div class="title">
+        <div>
+          <span>时间</span>
+        </div>
+        <div>
+          <span>关系</span>
+        </div>
+        <div>
+          <span>充值总额</span>
+        </div>
+        <div>
+          <span>返利</span>
+        </div>
+        <div>
+          <span>合伙人提成</span>
+        </div>
       </div>
-      <div>
-        <span>关系</span>
+      <div class="dispaly" v-for="(i,v) of list" :key="v">
+        <van-row gutter="20" type="flex" justify="space-around">
+          <van-col span="6">
+            <span>{{i.time}}</span>
+          </van-col>
+          <van-col span="8">
+            <span class="cen">{{i.identity}}</span>
+          </van-col>
+          <van-col span="6">
+            <span>{{i.quota}}</span>
+          </van-col>
+          <van-col span="6">
+            <span>{{i.rebate}}</span>
+          </van-col>
+          <van-col span="6">
+            <span>{{i.commission}}</span>
+          </van-col>
+        </van-row>
       </div>
-      <div>
-        <span>充值总额</span>
-      </div>
-      <div>
-        <span>返利</span>
-      </div>
-      <div>
-        <span>合伙人提成</span>
-      </div>
+      <van-pagination v-model="page.pageNum" @change="onChange" :total-items="14" :items-per-page="2" />
     </div>
-    <div class="dispaly" v-for="(i,v) of list" :key="v">
-      <van-row gutter="20" type="flex" justify="space-around">
-        <van-col span="6">
-          <span>{{i.time}}</span>
-        </van-col>
-        <van-col span="8">
-          <span class="cen">{{i.identity}}</span>
-        </van-col>
-        <van-col span="6">
-          <span>{{i.quota}}</span>
-        </van-col>
-        <van-col span="6">
-          <span>{{i.rebate}}</span>
-        </van-col>
-        <van-col span="6">
-          <span>{{i.commission}}</span>
-        </van-col>
-      </van-row>
+    <!-- 底部展示栏 -->
+    <div class="footer-y"></div>
+    <div class="footer">
+      <div>总金额: {{ allMoney }}元</div>
+      <div>总笔数：{{ allNum }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { Pagination } from 'vant';
+
 export default {
   data() {
     return {
-      list: [
-        {
-          time: "2020-04-05",
-          identity: "一级代理",
-          quota: 6000,
-          rebate: "120[30%]",
-          commission: "120[10%]"
-        },
-        {
-          time: "2020-04-05",
-          identity: "指数玩家",
-          quota: 6000,
-          rebate: "120[30%]",
-          commission: "120[10%]"
-        },
-        {
-          time: "2020-04-05",
-          identity: "二级代理玩家",
-          quota: 6000,
-          rebate: "120[30%]",
-          commission: "120[10%]"
-        }
-      ]
+      allMoney: 0,
+      allNum: 0,
+      list: [],
+      page:{
+        pageNum:1
+      }
     };
   },
   methods: {
     toIndexPage() {
       this.$router.go(-1);
+    },
+    init() {
+      this.WS.sendMsg({ code: 40014, args: { uid: this.Uid, day: this.page.pageNum } }).then(
+        res => {
+          console.log(res);
+          this.allMoney = res.args.allMoney;
+          this.allNum = res.args.rNum;
+          for(let i  in res.args.recharge){
+            let data = {};
+            data.time = res.args.recharge[i].payTime
+            data.identity = i == "one" ? "直属玩家" : ( i == "two" ? "一级代理玩家" : "二级代理玩家") ;
+            data.quota = res.args.recharge[i].money
+            data.rebate = res.args.recharge[i].rebate.money;
+            data.commission = res.args.recharge[i].partner.money;
+            this.list.push(data);
+          }
+        }
+      );
+    },
+    onChange(){
+      this.list = [];
+      this.init();
     }
+  },
+  beforeMount() {
+    this.init();
   }
 };
 </script>
 <style lang="less" scoped>
-
 .title {
   display: flex;
   width: 100%;
@@ -92,5 +110,23 @@ export default {
 }
 .dispaly {
   padding: 1.25rem 0;
+}
+.footer-y {
+  width: 100%;
+  height: 50px;
+}
+.footer {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+}
+.footer div {
+  font-size: 18px;
+  width: 40%;
+  height: 50px;
+  padding-left: 10px;
+  line-height: 50px;
 }
 </style>

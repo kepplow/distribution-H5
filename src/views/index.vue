@@ -133,7 +133,7 @@ export default {
       let that = this;
       this.WS.sendMsg({
         code: 40004,
-        args: {}
+        args: {uid : this.Uid}
       }).then(res => {
         console.log(111, res);
         that.allMoney = res.args.allMoney || 0;

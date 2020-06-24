@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { Toast } from "vant";
+
 export default {
   data() {
     return {
@@ -23,21 +25,21 @@ export default {
       nickname: ""
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     submit() {
-      if(this.userID == ""){
+      if (this.userID == "") {
         return;
       }
       this.WS.sendMsg({
         code: 40001,
         args: {
+          uid: this.Uid,
           reUid: this.userID
         }
       }).then(res => {
-        console.log(res);
+        let tip =  res.args.result == 1 ? "成功" : "失败";
+        Toast("推荐" + tip);
       });
     }
   }

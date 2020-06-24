@@ -7,12 +7,14 @@
     </van-search>
 
     <van-dropdown-menu active-color="green">
-      <van-dropdown-item v-model="sort" :options="sortOption" />
+      <van-dropdown-item v-model="sort" :options="sortOption" @change="changeSearch" />
     </van-dropdown-menu>
 
-    <div class="detailBox" v-for="item in data" :key="item">
+    <div class="detailBox" v-for="(item,index) in data" :key="index">
       <div class="flex">
-        <div class="img">1</div>
+        <div class="img">
+          <img :src= item.head_pic >
+        </div>
         <div class="txt">
           <div>{{ item.nickName }}（ID：{{ item.uid }}）</div>
           <div>总局数：{{ item.playCards }}</div>
@@ -35,30 +37,44 @@ export default {
     return {
       data: [],
       search: "",
-      sort: 0,
+      sort: 1,
       sortOption: [
-        { text: "按加入时间排序", value: 0 },
-        { text: "按下级人数排序", value: 1 },
-        { text: "按消费金额排序", value: 2 },
-        { text: "按总消费金额排序", value: 3 },
+        { text: "按加入时间排序", value: 1 },
+        { text: "按下级人数排序", value: 2 },
+        { text: "按消费金额排序", value: 3 },
         { text: "按活跃度排序", value: 4 }
-      ]
+      ],
+      page: {
+        pageNum: 1,
+        pagesize: 10
+      }
     };
   },
   methods: {
     onSearch() {
       console.log(this.search);
+    },
+    changeSearch() {
+      this.getData();
+    },
+
+    getData() {
+      this.WS.sendMsg({
+        code: 40002,
+        args: {
+          uid: this.Uid,
+          startIndex: (this.page.pageNum - 1) * this.page.pagesize,
+          endIndex: this.page.pagesize,
+          type: this.sort
+        }
+      }).then(res => {
+        console.log(res);
+        this.data = res.args.relation;
+      });
     }
   },
   beforeMount() {
-    let that = this;
-    this.WS.sendMsg({
-      code: 40002,
-      args: { startIndex: 0, endIndex: 20, type: "1" }
-    }).then(res => {
-      console.log(111111, res);
-      that.data = res.relation;
-    });
+    this.getData();
   }
 };
 </script>
@@ -98,7 +114,6 @@ export default {
         }
       }
       .img {
-        background: red;
         width: 4.375rem;
         height: 4.375rem;
         margin-right: 1.25rem;

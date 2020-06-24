@@ -29,7 +29,7 @@ export default {
     };
   },
   beforeMount() {
-    this.WS.sendMsg({ code: 40015, args: {} }).then(res => {
+    this.WS.sendMsg({ code: 40015, args: {uid : this.Uid} }).then(res => {
       if (res.args && res.args.data) {
         this.list = JSON.parse(JSON.stringify(res.args.data));
       }
@@ -43,7 +43,7 @@ export default {
         message: "是否使用余额购买？"
       })
         .then(() => {
-          this.WS.sendMsg({ code: 40016, args: { id: data.id } }).then(res => {
+          this.WS.sendMsg({ code: 40016, args: { uid : this.Uid,id: data.id } }).then(res => {
             console.log(res);
           });
         })
