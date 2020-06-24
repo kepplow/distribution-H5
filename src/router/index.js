@@ -138,7 +138,14 @@ const routes = [{
   meta: {
     title: '亲友圈列表'
   }
-
+},
+{
+  path: '/frienadConsumption',
+  name: 'frienadConsumption',
+  component: () => import('../views/frienadConsumption.vue'),
+  meta: {
+    title: '亲友圈消费记录'
+  }
 },
 {
   path: '/apply',
