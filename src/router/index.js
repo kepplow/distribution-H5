@@ -28,6 +28,14 @@ const routes = [{
   }
 },
 {
+  path: '/editPwd',
+  name: 'editPwd',
+  component: () => import('../views/editPwd.vue'),
+  meta: {
+    title: '修改密码'
+  }
+},
+{
   path: '/home',
   name: 'home',
   component: () => import('../views/home.vue'),
