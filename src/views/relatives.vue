@@ -87,6 +87,17 @@
       <span class="iconfont icon-jiantou mr-1"></span>
     </div>
     <div
+      class="flex justify-between align-center ml-2 py-1 border-bottom"
+      @click="goto('/frienadConsumption')"
+    >
+      <div class>
+        <span class="iconfont icon-zhanji font-lg vertical-middle mr-2"></span>
+
+        <span>亲友圈消费记录</span>
+      </div>
+      <span class="iconfont icon-jiantou mr-1"></span>
+    </div>
+    <div
       class="flex justify-between align-center ml-2 pt-2 pb-1 border-bottom"
       @click="goto('makeOver')"
     >

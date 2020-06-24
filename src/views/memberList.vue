@@ -25,7 +25,6 @@
         <thead>
           <tr>
             <th>姓名</th>
-            <th>疲劳度</th>
             <th>总成绩</th>
             <th>耗卡</th>
             <th>游戏</th>
@@ -40,7 +39,6 @@
               <br />
               <span>ID:{{i.id}}</span>
             </td>
-            <td>{{i.fatigue}}</td>
             <td>{{i.warning}}</td>
             <td>{{i.car}}</td>
             <td>{{i.game_type}}</td>
@@ -140,6 +138,7 @@ export default {
           this.tip = "没有更多了。。。";
           return;
         }
+        console.log(res);
         res.args.data.forEach(ele => {
           this.gameTypeList.forEach(e => {
             if (ele.game_type == e.value) {
@@ -188,7 +187,7 @@ export default {
   },
   beforeMount() {
     if (this.$route.query.row) {
-      this.fraend = this.$route.query.row.uid;
+      this.fraend = this.$route.query.row.familyId;
     }
   }
 };
