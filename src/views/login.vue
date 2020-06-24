@@ -33,8 +33,9 @@
 
       <div class="flex justify-end">
         <button class="btn btn-link" @click="goto('/register')">注册</button>
-        <button class="btn btn-link">忘记密码</button>
+        <div class="btn btn-link" @click="goto('/editPwd')">忘记密码</div>
       </div>
+
       <div style="margin: 16px;">
         <van-button round block type="info" native-type="submit">登录</van-button>
       </div>
@@ -55,7 +56,6 @@ export default {
       phone: "18379460084",
       password: "123456",
       Vcode: "",
-      TCode: "123456",
       verifyCode: null
     };
   },
@@ -105,8 +105,7 @@ export default {
     this.$nextTick(() => {
       this.verifyCode = new GVerify({
         id: "picyzm",
-        type: "blend",
-        code: this.TCode
+        type: "blend"
       });
     });
   }

@@ -25,9 +25,9 @@
       <van-field
         v-model="password"
         type="password"
-        name="密码"
-        label="密码"
-        placeholder="密码"
+        name="新密码"
+        label="新密码"
+        placeholder="新密码"
         class="mt-1"
         :rules="[{ required: true, message: '请填写密码' }]"
       />
@@ -35,9 +35,9 @@
       <van-field
         v-model="repeatPassword"
         type="password"
-        name="重复密码"
-        label="重复密码"
-        placeholder="重复密码"
+        name="重复新密码"
+        label="重复新密码"
+        placeholder="重复新密码"
         class="mt-1"
         :rules="[{ required: true, validator: (value, rule)=>value === password, message: '请再次填写密码' }]"
       />
@@ -46,7 +46,7 @@
         <button class="btn btn-link" @click="goto('/login')">去登录</button>
       </div>
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">注册</van-button>
+        <van-button round block type="info" native-type="submit">确定</van-button>
       </div>
     </van-form>
   </div>
@@ -80,18 +80,18 @@ export default {
     },
     onSubmit() {
       this.WS.sendMsg({
-        code: 40017,
+        code: 40012,
         args: {
-          phone: this.phone,
+          phone: "100001",
           sms: "111111",
-          pwd: this.password,
+          newPassWord: "456789",
           type: "agent"
         }
       }).then(res => {
         if (res.args && res.args.result == 0) {
-          Toast.success("注册成功！");
+          Toast.success("修改成功！");
         } else {
-          Toast.fail("注册失败！");
+          Toast.fail("修改失败！");
         }
       });
     }
