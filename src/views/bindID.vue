@@ -32,7 +32,8 @@ export default {
       nickname: "",
       value: 0,
       columns: [],
-      showPicker: false
+      showPicker: false,
+      isExit: 0
     };
   },
   methods: {
@@ -52,6 +53,10 @@ export default {
       }
       if (this.value == 0) {
         Toast("请选择亲友圈");
+        return;
+      }
+      if (this.isExit == 0) {
+        Toast("玩家ID不存在");
         return;
       }
       this.WS.sendMsg({
@@ -84,8 +89,10 @@ export default {
       }).then(res => {
         if (res.args.result == 0 && res.args.data) {
           this.nickname = res.args.data.wx_name;
+          this.isExit = 1;
         } else {
-          this.nickname = "查询玩家信息失败，没有这个玩家";
+          this.nickname = "玩家不存在或玩家还未绑定代理";
+          this.isExit = 0;
         }
       });
     }

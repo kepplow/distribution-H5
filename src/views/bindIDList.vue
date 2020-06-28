@@ -20,24 +20,18 @@
           <th>操作</th>
         </tr>
         <tr v-for="(i,v) of list" :key="v">
-          <td>
-            {{ i.uid }}
-          </td>
-          <td>
-            {{ i.wx_name }}
-          </td>
-          <td>
-            {{ i.name }}
-          </td>
-          <td>
-            {{ i.join_time }}
-          </td>
+          <td>{{ i.uid }}</td>
+          <td>{{ i.wx_name }}</td>
+          <td>{{ i.name }}</td>
+          <td>{{ i.join_time }}</td>
           <td>
             <a @click="see(i)">查看亲友圈</a>
           </td>
         </tr>
       </table>
     </div>
+
+    <div class="botton" @click="nextPage">{{ tip }}</div>
   </div>
 </template>
 
@@ -48,6 +42,7 @@ import { Toast } from "vant";
 export default {
   data() {
     return {
+      tip: "点击加载更多。。。",
       value: "",
       list: [],
       page: {
@@ -58,17 +53,22 @@ export default {
   },
   methods: {
     onSearch() {
+      this.tip = "点击加载更多。。。";
       this.list = [];
       this.getDataList(1, 20, this.value);
     },
     nextPage() {
-      this.pageNum++;
-      this.getDataList(this.pageNum, this.pageSize, this.value);
+      this.page.pageNum++;
+      this.getDataList(this.page.pageNum, this.page.pageSize, this.value);
     },
     newBind() {
       this.$router.push("/bindID");
     },
-    getDataList(pageNum = this.pageNum, pageSize = this.pageSize, name) {
+    getDataList(
+      pageNum = this.page.pageNum,
+      pageSize = this.page.pageSize,
+      name
+    ) {
       let data = { code: 30125, args: {} };
       data.args.name = name;
       data.args.uid = this.Uid;
@@ -76,13 +76,17 @@ export default {
       data.args.pageSize = pageSize;
       this.WS.sendMsg(data).then(res => {
         console.log(res);
+        if (res.args.data.length == 0) {
+          this.tip = "没有更多了。。。";
+          return;
+        }
         res.args.data.forEach(ele => {
-          this.list.push(ele)
-        })
+          this.list.push(ele);
+        });
       });
     },
-    see(row){
-        this.$router.push({path:`/memberList`,query:{row:row}});
+    see(row) {
+      this.$router.push({ path: `/memberList`, query: { row: row } });
     }
   },
   mounted() {
@@ -116,5 +120,13 @@ export default {
       line-height: 30px;
     }
   }
+}
+.botton {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(200, 200, 200);
 }
 </style>

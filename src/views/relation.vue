@@ -13,7 +13,7 @@
     <div class="detailBox" v-for="(item,index) in data" :key="index">
       <div class="flex">
         <div class="img">
-          <img :src= item.head_pic >
+          <img :src="item.head_pic" />
         </div>
         <div class="txt">
           <div>{{ item.nickName }}（ID：{{ item.uid }}）</div>
@@ -25,6 +25,8 @@
         <div>下级人数：{{ item.nextOnline }}|{{ item.nextAllLen }}</div>
       </div>
     </div>
+
+    <div class="botton" @click="next">{{ tip }}</div>
   </div>
 </template>
 
@@ -35,6 +37,7 @@ import { DropdownMenu, DropdownItem, Search } from "vant";
 export default {
   data() {
     return {
+      tip: "点击加载更多。。。",
       data: [],
       search: "",
       sort: 1,
@@ -52,23 +55,33 @@ export default {
   },
   methods: {
     onSearch() {
-      console.log(this.search);
+      this.page.pageNum = 1;
+      this.tip = "点击加载更多。。。";
+      this.getData();
     },
     changeSearch() {
       this.getData();
     },
-
+    next() {
+      this.page.pageNum++;
+      this.getData();
+    },
     getData() {
+      let startIndex = (this.page.pageNum - 1) * this.page.pagesize;
       this.WS.sendMsg({
         code: 40002,
         args: {
           uid: this.Uid,
           startIndex: (this.page.pageNum - 1) * this.page.pagesize,
-          endIndex: this.page.pagesize,
+          endIndex: startIndex + this.page.pagesize,
           type: this.sort
         }
       }).then(res => {
         console.log(res);
+        if (res.args.relation.length == 0) {
+          this.tip = "没有更多了。。。";
+          return;
+        }
         this.data = res.args.relation;
       });
     }
@@ -128,5 +141,13 @@ export default {
       }
     }
   }
+}
+.botton {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(200, 200, 200);
 }
 </style>

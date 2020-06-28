@@ -3,40 +3,24 @@
     <div>
       <div>1、玩家ID</div>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入玩家ID" />
+        <van-field v-model="userId" placeholder="请输入玩家ID" @blur="getUserID" />
       </van-cell-group>
     </div>
     <div>
       <div>2、玩家昵称</div>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入玩家昵称" />
+        <van-field v-model="nickName" placeholder="请输入玩家昵称" readonly />
       </van-cell-group>
-    </div>
-    <div>
-      <div>3、请选择自己的亲友圈</div>
-      <van-field
-        readonly
-        clickable
-        name="picker"
-        :value="value"
-        placeholder="请选择自己的亲友圈"
-        @click="showPicker = true"
-      />
-      <van-popup v-model="showPicker" position="bottom">
-        <van-picker
-          show-toolbar
-          :columns="columns"
-          @confirm="onConfirm"
-          @cancel="showPicker = false"
-        />
-      </van-popup>
     </div>
     <div>
       <div>4、房卡数量</div>
       <van-cell-group>
-        <van-field v-model="value" placeholder="请输入房卡数量" />
+        <van-field v-model="cardNum" placeholder="请输入房卡数量" />
       </van-cell-group>
-      <div>剩余房卡数: <span>323</span></div>
+      <div>
+        剩余房卡数:
+        <span>323</span>
+      </div>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
   </div>
@@ -44,12 +28,14 @@
 
 <script>
 import { Field } from "vant";
+import { Toast } from "vant";
 export default {
   data() {
     return {
-      value: "",
-      columns: ["亲友圈1", "亲友圈2", "亲友圈3", "亲友圈4", "亲友圈5"],
-      showPicker: false
+      userId: "",
+      nickName: "",
+      cardNum: "",
+      isExit: 0
     };
   },
   methods: {
@@ -57,8 +43,43 @@ export default {
       this.value = value;
       this.showPicker = false;
     },
-    submit(){
-
+    submit() {
+      if (!this.userId) {
+        Toast("请输入玩家ID！");
+        return;
+      }
+      if (!this.cardNum) {
+        Toast("请输入出售数量！");
+        return;
+      }
+      if (this.isExit == 0) {
+        Toast("玩家ID不存在");
+        return;
+      }
+      this.WS.sendMsg({
+        code: 40007,
+        args: { uid: this.Uid, buyUid: this.userId, num: this.cardNum }
+      }).then(res => {
+        if (res.args.result == 0) {
+          Toast("出售成功！");
+        } else {
+          Toast("出售失败！");
+        }
+      });
+    },
+    getUserID() {
+      this.WS.sendMsg({
+        code: 30136,
+        args: { uid: this.Uid, key: this.userId }
+      }).then(res => {
+        if (res.args.result == 0 && res.args.data) {
+          this.nickName = res.args.data.wx_name;
+          this.isExit = 1;
+        } else {
+          this.nickName = "玩家不存在或玩家还未绑定代理";
+          this.isExit = 0;
+        }
+      });
     }
   }
 };
