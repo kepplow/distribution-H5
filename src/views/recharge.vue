@@ -22,6 +22,8 @@
 
 <script>
 import { Dialog } from "vant";
+import { Toast } from "vant";
+
 export default {
   data() {
     return {
@@ -44,7 +46,11 @@ export default {
       })
         .then(() => {
           this.WS.sendMsg({ code: 40016, args: { uid : this.Uid,id: data.id } }).then(res => {
-            console.log(res);
+            if(res.args.result == 0){
+              Toast("购买成功");
+            }else{
+              Toast("购买失败，余额不足");
+            }
           });
         })
         .catch(() => {

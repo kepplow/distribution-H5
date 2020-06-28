@@ -58,6 +58,7 @@
 import bottomBar from "../components/common/bottomBar.vue";
 import { Dialog } from "vant";
 import { NoticeBar } from "vant";
+import { Toast } from "vant";
 
 export default {
   name: "index",
@@ -71,7 +72,8 @@ export default {
       myID: 0,
       nickname: "",
       notice: "",
-      headPic: require("../assets/images/head.png")
+      headPic: require("../assets/images/head.png"),
+      weChat: ""
     };
   },
 
@@ -119,10 +121,20 @@ export default {
         message: "确认结算当前余额"
       })
         .then(() => {
+          if (that.bean < 100) {
+            Toast("您还没有可结算的现金");
+            return;
+          }
+          if (!that.weChat) {
+            Toast("您还未绑定提现微信");
+            return;
+          }
           that.WS.sendMsg({
             type: 1,
             num: that.bean
-          }).then(res => {});
+          }).then(res => {
+            console.log(res);
+          });
         })
         .catch(() => {
           // on cancel
@@ -133,7 +145,7 @@ export default {
       let that = this;
       this.WS.sendMsg({
         code: 40004,
-        args: {uid : this.Uid}
+        args: { uid: this.Uid }
       }).then(res => {
         console.log(111, res);
         that.allMoney = res.args.allMoney || 0;
@@ -147,7 +159,10 @@ export default {
     this.nickname = info.user.info.name;
     this.myID = info.uid;
     this.notice = info.content.notice;
-    // this.headPic = info.user.info.headPic;
+    this.weChat = info.content.wechat;
+    if (info.user.info.headPic) {
+      this.headPic = info.user.info.headPic;
+    }
     this.WS.bind("1313", function(message) {
       console.log(message);
     });

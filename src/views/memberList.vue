@@ -44,14 +44,27 @@
             <td>{{i.game_type}}</td>
             <td>{{i.is_lock_show}} （只是亲友圈锁定，可以解锁）、正常、平台封印</td>
             <td>
-              <a @click="lockAction(i)">加锁（解锁）</a>|
-              <a @click="detailed">明细</a>
+              <a @click="lockAction(i,v)">加锁（解锁）</a>|
+              <a @click="detailed(i)">明细</a>
             </td>
           </tr>
         </tbody>
       </table>
       <div class="botton" @click="next">{{ tip }}</div>
     </div>
+
+    <!-- 弹出层 -->
+    <van-popup v-model="deta" class="deta">
+      <van-form class="form">
+        <van-field v-model="detaData.warning" label="总成绩" readonly />
+        <van-field v-model="detaData.round" label="总局数" readonly />
+        <van-field v-model="detaData.transport" label="输分" readonly />
+        <van-field v-model="detaData.win" label="赢分" readonly />
+        <van-field v-model="detaData.hanks" label="总把数" readonly />
+        <van-field v-model="detaData.cardratio" label="耗卡" readonly />
+        <van-field v-model="detaData.winrate" label="最佳场次" readonly />
+      </van-form>
+    </van-popup>
   </div>
 </template>
 
@@ -59,10 +72,13 @@
 import { Form } from "vant";
 import { Pagination } from "vant";
 import { Dialog } from "vant";
-import { Toast } from 'vant';
+import { Toast } from "vant";
+import { Popup } from "vant";
+
 export default {
   data() {
     return {
+      deta: false,
       show: false,
       actions: [
         { name: "默认查询", key: "" },
@@ -97,7 +113,16 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      tip: "点击加载更多。。。"
+      tip: "点击加载更多。。。",
+      detaData: {
+        warning: "",
+        round: "",
+        transport: "",
+        win: "",
+        hanks: "",
+        cardratio: "",
+        winrate: ""
+      }
     };
   },
   methods: {
@@ -160,19 +185,38 @@ export default {
       this.page.pageNum = 1;
       this.Submit();
     },
-    detailed() {},
-    lockAction(row) {
+    detailed(row) {
+      this.detaData.warning = row.warning;
+      this.detaData.round = row.round;
+      this.detaData.transport = row.transport;
+      this.detaData.win = row.win;
+      this.detaData.hanks = row.hanks;
+      this.detaData.cardratio = row.cardratio;
+      this.detaData.winrate = row.winrate;
+      this.deta = true;
+    },
+    lockAction(row, index) {
       let that = this;
       Dialog.confirm({
         message: row.is_lock == 1 ? "是否解锁" : "是否加锁"
       })
         .then(() => {
           let data = { code: 30130, args: {} };
-          data.args.is_lock = row.is_lock == 1 ? "0" : "1"; 
+          data.args.is_lock = row.is_lock == 1 ? "0" : "1";
           data.args.uid = that.Uid.toString();
           data.args.id = row.id.toString();
           console.log(data);
           that.WS.sendMsg(data).then(res => {
+            console.log(res);
+            if (res.args.result == 0) {
+              if (row.is_lock == 1) {
+                that.list[index].is_lock = 0;
+                that.list[index].is_lock_show = "正常";
+              } else {
+                that.list[index].is_lock = 1;
+                that.list[index].is_lock_show = "锁定";
+              }
+            }
             Toast(res.args.msg);
           });
         })
@@ -223,5 +267,16 @@ export default {
     font-size: 14px;
     color: rgb(200, 200, 200);
   }
+}
+.form {
+  width: 80%;
+  margin: 10px;
+  padding-top: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+.deta{
+  width: 80%;
+  border-radius: 10px;
 }
 </style>

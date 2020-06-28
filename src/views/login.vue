@@ -48,13 +48,15 @@
 
 <script>
 import "../../public/gVerify/gVerify";
+import { Toast } from "vant";
+
 export default {
   data() {
     return {
       msg: "",
       show: false,
       phone: "18379460084",
-      password: "123456",
+      password: "liao123456",
       Vcode: "",
       verifyCode: null
     };
@@ -82,8 +84,9 @@ export default {
         }).then(res => {
           console.log("登录信息:", res);
           if (res.args.uid) {
-            this.msg = "登录成功！";
-            this.show = true;
+            // this.msg = "";
+            // this.show = true;
+             Toast("登录成功！");
             localStorage.setItem("Uid", JSON.stringify(res.args.uid));
             localStorage.setItem("loginInfo", JSON.stringify(res.args));
             localStorage.setItem("userPhone", this.phone);
@@ -92,13 +95,15 @@ export default {
               this.$router.push("/home");
             }, 500);
           } else {
-            this.msg = "登录失败！";
-            this.show = true;
+            // this.msg = "";
+            Toast("登录失败！");
+            // this.show = true;
           }
         });
       } else {
-        this.msg = "验证码错误！";
-        this.show = true;
+        // this.msg = "";
+        // this.show = true;
+        Toast("验证码错误！");
         return;
       }
     }
