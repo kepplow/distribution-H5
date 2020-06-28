@@ -3,13 +3,13 @@
     <div>
       <h3>1：玩家ID</h3>
       <van-cell-group>
-        <van-field v-model="userId" placeholder="请输入玩家ID" />
+        <van-field v-model="userId" placeholder="请输入玩家ID" @blur="getUserInfo" />
       </van-cell-group>
     </div>
     <div>
       <h3>2：玩家昵称</h3>
       <van-cell-group>
-        <van-field v-model="nickName" placeholder="请输入玩家昵称" />
+        <van-field v-model="nickName" placeholder="请输入玩家昵称" readonly />
       </van-cell-group>
     </div>
     <div>
@@ -76,6 +76,18 @@ export default {
           };
           this.columns.push(ar);
         });
+      });
+    },
+    getUserInfo() {
+      this.WS.sendMsg({
+        code: 30136,
+        args: { uid: this.Uid, key: this.userId }
+      }).then(res => {
+        if (res.args.result == 0 && res.args.data) {
+          this.nickName = res.args.data.wx_name;
+        } else {
+          this.nickName = "查询玩家信息失败，没有这个玩家";
+        }
       });
     }
   },

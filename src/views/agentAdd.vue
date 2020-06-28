@@ -3,7 +3,7 @@
     <div class="title">1、玩家ID</div>
     <div>
       <van-cell-group>
-        <van-field v-model="userID" placeholder="请输入玩家ID" />
+        <van-field v-model="userID" placeholder="请输入玩家ID" @blur="getName" />
       </van-cell-group>
       <div class="zhuyi">注：玩家与您绑定关系时，无法推荐其成为代理</div>
     </div>
@@ -38,8 +38,22 @@ export default {
           reUid: this.userID
         }
       }).then(res => {
-        let tip =  res.args.result == 0 ? "成功" : "失败";
+        let tip = res.args.result == 0 ? "成功" : "失败";
         Toast("推荐" + tip);
+      });
+    },
+    getName() {
+      this.WS.sendMsg({
+        code: 30136,
+        args: { uid: this.Uid, key: this.userID }
+      }).then(res => {
+        console.log(res);
+
+        if (res.args.result == 0 && res.args.data) {
+          this.nickname = res.args.data.wx_name;
+        } else {
+          this.nickname = "查询玩家信息失败，没有这个玩家";
+        }
       });
     }
   }
