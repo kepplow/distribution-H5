@@ -38,7 +38,7 @@ export default {
           reUid: this.userID
         }
       }).then(res => {
-        let tip =  res.args.result == 1 ? "成功" : "失败";
+        let tip =  res.args.result == 0 ? "成功" : "失败";
         Toast("推荐" + tip);
       });
     }

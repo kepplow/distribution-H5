@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>分享战绩</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<script src="../js/jq.min.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+		}
+
+		.box {
+			padding: 15px;
+		}
+
+		.img-circle {
+			width: 20px;
+			height: 20px;
+			margin: 5px;
+			vertical-align: middle;
+		}
+
+		.img-thumbnail {
+			width: 100px;
+			height: 100px;
+		}
+
+		.table-box {
+			margin-top: 20px;
+			border: 1px solid #F6F6F6;
+			background-color: #F6F6F6;
+			border-radius: 10px;
+		}
+
+		.head {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			line-height: 50px;
+			background-color: #DDDDDD;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+		}
+
+		.head span {
+			color: black;
+			font-weight: 600;
+		}
+
+		.info {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			line-height: 40px;
+		}
+
+		.info-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.pic-box {
+			display: flex;
+			overflow: scroll;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<div class="">
+			<div class="pic-list">
+			</div>
+		</div>
+		<div class="table-box">
+			<div class="head">
+			</div>
+			<div class="info">
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	(function () {
+		let WS = null
+		let query = window.location.search.substr(1);;
+		console.log(location);
+		let params = {}
+		query.split('&').forEach(ele => {
+			params[ele.split('=')[0]] = ele.split('=')[1];
+		})
+
+		function init() {
+			if (WS && WS.close) {
+				WS.close()
+			}
+			WS = new WebSocket('ws://47.105.60.123:7008', "default-protocol");
+			WS.onopen = function (e) {
+				console.log('连接成功！');
+
+			}
+			WS.onmessage = function (e) {
+				console.log(JSON.parse(dec(e)));
+				let res = JSON.parse(dec(e));
+				if (res.args && res.args.data) {
+					// 相册显示 creator
+					let data = JSON.parse(JSON.stringify(res.args.data));
+					data.players.unshift(data.creator)
+					data.players.forEach(item => {
+						let picList = '<div class="pic-box">';
+
+						if (item) {
+							item.url.forEach(ele => {
+								picList += `<img src="${ele}" class="img-thumbnail">`
+							})
+							picList += '</div>';
+
+
+							let album = $(`<div class="pic-item">
+								<img src="${item.headpic || ''}" class="img-circle">
+								<span>${item.name}</span>
+							</div>${picList}`);
+							$('.pic-list').append(album);
+						}
+
+					})
+
+					// 表格不显示 creator
+
+					$('.table-box .head').append($(`
+							<span>${data.time}</span>
+							<span>${data.round}局</span>
+							<span>房间号:<span>${data.roomId}</span></span>
+					`))
+					list = ''
+					res.args.data.players.forEach(item => {
+						list += `<div class="info-item">
+											<span class="name">${item.name}${item.fz ? '(房主)': ''}</span>
+											<span>${item.score}</span>
+										</div>`
+					})
+					$('.table-box .info').append($(list))
+				}
+
+			}
+			WS.sendNum = 0;
+			console.log(params)
+			waitForSocketConnection(WS, function () {
+				console.log("message sent!!!");
+				WS.send(enc(JSON.stringify({
+					"code": 40020,
+					"args": {
+						"roundId": params.rounId,
+						"creator": params.creator
+					}
+				})));
+			})
+		}
+		init();
+
+
+		// 等待连接成功执行回调
+		function waitForSocketConnection(socket, callback) {
+			// 网络差时 防止无限循环 造成内存泄漏
+			if (socket.sendNum >= 100) {
+				alert('连接失败，等待重连')
+				return init();
+			}
+
+			socket.sendNum += 1;
+			setTimeout(
+				function () {
+					if (socket.readyState === 1) {
+						console.log("Connection is made")
+						if (callback != null) {
+							callback();
+						}
+						return;
+
+					} else {
+						console.log("wait for connection...")
+						waitForSocketConnection(socket, callback);
+					}
+				}, 5); // wait 5 milisecond for the connection...
+		}
+
+
+
+		/**
+		 * 加密
+		 */
+		function enc(str) {
+			let c = String.fromCharCode(str.charCodeAt(0) + str.length);
+			for (let i = 1; i < str.length; i++) {
+				c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+			}
+			return stringToHex(c);
+		}
+		/**
+		 * 字符串转化为十六进制
+		 * @param str
+		 * @returns {string}
+		 */
+		function stringToHex(str) {
+			let val = "";
+			for (let i = 0; i < str.length; i++) {
+				if (val == "") val = str.charCodeAt(i).toString(16);
+				else val += "," + str.charCodeAt(i).toString(16);
+			}
+			return val;
+		}
+		/**
+		 * 解密
+		 */
+		function dec(hex) {
+			let str = hexToString(hex);
+			let c = String.fromCharCode(str.charCodeAt(0) - str.length);
+			for (let i = 1; i < str.length; i++) {
+				c += String.fromCharCode(str.charCodeAt(i) - c.charCodeAt(i - 1));
+			}
+			return c;
+		}
+		/**
+		 * 十六进制转化为字符串
+		 * @param str
+		 * @returns {string}
+		 */
+		function hexToString(str) {
+			let val = "";
+			let arr = str.data.split(",");
+			for (let i = 0; i < arr.length; i++) {
+				val += String.fromCharCode(parseInt(arr[i], 16));
+			}
+			return val;
+		}
+	})()
+</script>
+
+</html>

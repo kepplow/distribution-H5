@@ -91,6 +91,9 @@ export default {
             setTimeout(() => {
               this.$router.push("/home");
             }, 500);
+          } else {
+            this.msg = "登录失败！";
+            this.show = true;
           }
         });
       } else {

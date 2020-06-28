@@ -37,6 +37,7 @@
       position: absolute;
       z-index: 2;
       top: 10%;
+      left: 0;
     }
 
     .text-1 {
@@ -86,10 +87,26 @@
   btn.onclick = function (e) {
     this.classList.remove('animate__zoomIn', 'animate__animated');
     this.classList.add('animate__bounceIn', 'animate__animated');
-    setTimeout(()=> {
+    setTimeout(() => {
       btn.classList.remove('animate__bounceIn', 'animate__animated');
-    },1000)
+    }, 1000)
+
+    var isAndroid = navigator.userAgent.match(/android/ig),
+      isIos = navigator.userAgent.match(/iphone|ipod/ig),
+      isIpad = navigator.userAgent.match(/ipad/ig),
+      isWeixin = (/MicroMessenger/ig).test(navigator.userAgent),
+      openparam = window.location.search.substr(1);
+    if (!isWeixin) {
+      if ((isIos || isIpad) && !isAndroid) {
+        window.location = 'igof://com.jobnew.igof?' + openparam;
+      } else if (isAndroid) {
+        alert('igof://com.jobnew.igof/openwith?' + openparam);
+        window.location = 'igof://com.jobnew.igof/openwith?' + openparam;
+      }
+    }
+
   }
+
 </script>
 
 </html>

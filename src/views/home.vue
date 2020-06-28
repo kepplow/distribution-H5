@@ -6,11 +6,11 @@
         <span>提现微信</span>
       </div>
       <div>
-        <span>Bracke</span>&nbsp;&nbsp;&nbsp;
+        <span>{{name}}</span>&nbsp;&nbsp;&nbsp;
         <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
-    <div class="flex">
+    <!-- <div class="flex">
       <div>
         <img src="../assets/images/nickname.png" />
         <span>微信昵称</span>
@@ -19,7 +19,7 @@
         <span>{{ name }}</span>&nbsp;&nbsp;&nbsp;
         <span class="iconfont icon-jiantou mr-1"></span>
       </div>
-    </div>
+    </div> -->
     <div class="flex">
       <div>
         <img src="../assets/images/phone.png" />
@@ -30,7 +30,7 @@
         <span class="iconfont icon-jiantou mr-1"></span>
       </div>
     </div>
-    <div class="flex bottom-sty">
+    <div class="flex bottom-sty" @click="to('register')">
       <div>
         <img src="../assets/images/password.png" />
         <span>登录密码</span>

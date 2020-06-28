@@ -1,96 +1,53 @@
 <template>
   <div>
-    <div class="flex justify-around mt-1">
-      <input class="form-control mx-1" type="text" placeholder="开始时间" id="startTime" v-model="startTime" />
-      <input class="form-control mx-1" type="text" placeholder="结束时间" id="endTime" v-model="endTime" />
-    </div>
-
     <div class="flex m-1">
-      <input type="text" class="form-control" placeholder="姓名" />
-      <button type="button" class="btn btn-default btn-xs px-2 ml-2">搜索</button>
+      <select class="form-control" title="亲友圈" v-model="familyId">
+        <option value>所有</option>
+        <option v-for="(item, index) in memberList" :key="index" :value="item.id">{{item.name}}</option>
+      </select>
+
+      <select class="form-control" placeholder="亲友圈" v-model="type">
+        <option value>所有</option>
+        <option v-for="(value, key) in types" :key="key" :value="key">{{value}}</option>
+      </select>
+    </div>
+    <div class="flex m-1">
+      <input type="text" class="form-control mr-1" placeholder="输入" v-model="searchKey" />
+      <button type="button" class="btn btn-default btn-xs px-2 ml-2" @click="getData">搜索</button>
     </div>
 
-    <div class="item">
+    <div class="item" v-for="(item,index) in list" :key="index">
       <div class="flex justify-around align-center border font-md mt-2 py-1">
-        <span>2020-05-20 12:21:22</span>
-        <span>5局</span>
+        <span>{{item.create_time}}</span>
+        <span>{{item.round}}局</span>
         <span>
           房间号：
-          <span>263134</span>
+          <span>{{item.room_number}}</span>
         </span>
       </div>
       <div class="flex justify-around align-center">
-        <div class="flex flex-column align-center">
-          <span class="m-1">张三</span>
-          <span>6</span>
+        <div class="flex flex-column align-center" v-for="(v,i) in item.rets" :key="i">
+          <span class="m-1">{{v.name}}</span>
+          <span>{{v.score}}</span>
         </div>
-        <div class="flex flex-column align-center">
-          <span class="m-1">李四</span>
-          <span>6</span>
-        </div>
-        <div class="flex align-center justify-between">
-          <div class="flex flex-column align-center">
-            <span class="m-1">王五</span>
-            <span>6</span>
-          </div>
-          <span
-            @click="detail"
-            style="width:20px; border-radius: 5px;"
-            class="text-white bg-main text-align-center"
-          >详细</span>
-        </div>
+        <span
+          @click="detail"
+          style="width:20px; border-radius: 5px;"
+          class="text-white bg-main text-align-center"
+        >详细</span>
       </div>
       <div class="bg-gray flex justify-end">
         <div>
+          <span class="mr-1">{{types[item.type]}}</span>
           所属亲友圈：
-          <span>XXXX</span>
+          <span>{{item.name}}</span>
           ( ID:
-          <span>XXXX</span>
+          <span>{{item.familyId}}</span>
           )
         </div>
       </div>
     </div>
-    <div class="item">
-      <div class="flex justify-around align-center border font-md mt-2 py-1">
-        <span>2020-05-20 12:21:22</span>
-        <span>5局</span>
-        <span>
-          房间号：
-          <span>263134</span>
-        </span>
-      </div>
-      <div class="flex justify-around align-center">
-        <div class="flex flex-column align-center">
-          <span class="m-1">张三</span>
-          <span>6</span>
-        </div>
-        <div class="flex flex-column align-center">
-          <span class="m-1">李四</span>
-          <span>6</span>
-        </div>
-        <div class="flex align-center justify-between">
-          <div class="flex flex-column align-center">
-            <span class="m-1">王五</span>
-            <span>6</span>
-          </div>
-          <span
-            @click="detail"
-            style="width:20px; border-radius: 5px;"
-            class="text-white bg-main text-align-center"
-          >详细</span>
-        </div>
-      </div>
-      <div class="bg-gray flex justify-end">
-        <div>
-          所属亲友圈：
-          <span>XXXX</span>
-          ( ID:
-          <span>XXXX</span>
-          )
-        </div>
-      </div>
-    </div>
-
+    <div class="flex my-2 justify-center align-center btn-link" @click="more">查看更多</div>
     <!-- 弹出层 -->
     <van-dialog v-model="showDialog" title="对局详情" show-cancel-button>
       <table class="table table-bordered">
@@ -140,33 +97,75 @@
 </template>
 
 <script>
-import laydate from "../../public/laydate/laydate";
-
 export default {
   data() {
     return {
+      currentPage: 1,
+      searchKey: "",
+      type: "",
+      familyId: "",
       showDialog: false,
       name: "",
       startTime: "",
       endTime: "",
       showStartTime: false,
-      showEndTime: false
+      showEndTime: false,
+      memberList: [],
+      types: {
+        1: "麻将",
+        2: "斗地主",
+        3: "象棋",
+        4: "拼三张",
+        5: "拼十",
+        6: "龙虎斗",
+        7: "跑得快",
+        8: "血战麻将",
+        9: "百人牛牛",
+        10: "2人幺地人",
+        11: "3人幺地人"
+      },
+      list: []
     };
   },
   methods: {
+    more() {
+      this.currentPage = this.currentPage + 1;
+      this.getData();
+    },
+    getData() {
+      this.WS.sendMsg({
+        code: 30131,
+        args: {
+          uid: this.Uid,
+          key: this.searchKey,
+          type: this.type,
+          familyId: this.familyId,
+          pageNum: 1,
+          pageSize: 10 * this.currentPage
+        }
+      }).then(res => {
+        console.log(222, res);
+        if (res.args && res.args.data) {
+          this.currentPage = res.args.currentPage;
+          this.list = res.args.data;
+        }
+      });
+    },
     onSearch() {},
     detail() {
       this.showDialog = true;
     }
   },
   mounted() {
-    laydate.render({
-      elem: "#startTime", //指定元素
-      type: "datetime"
-    });
-    laydate.render({
-      elem: "#endTime", //指定元素
-      type: "datetime"
+    this.getData();
+    this.WS.sendMsg({
+      code: 30123,
+      args: { uid: this.Uid, key: "" }
+    }).then(res => {
+      console.log(111, res);
+      if (res.args && res.args.data) {
+        this.memberList = res.args.data;
+      }
     });
   }
 };

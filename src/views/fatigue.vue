@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     Submit() {
+      let that = this;
       let prams = { code: 30121, args: { uid: this.Uid } };
       this.WS.sendMsg(prams).then(res => {
         console.log(res);
