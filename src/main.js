@@ -10,7 +10,7 @@ Vue.use(Vant);
 Vue.config.productionTip = false
 
 Vue.prototype.WS = new WS({
-  ip: 'ws://47.105.60.123:7008'
+  ip: 'ws://27.50.169.38:7008'
 });
 // Vue.prototype.WS = new WebSocket('ws://47.105.60.123:7008', "default-protocol");
 

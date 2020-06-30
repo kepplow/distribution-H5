@@ -76,6 +76,11 @@ WBT.prototype.initWs = function () {
         console.log('登录成功！');
       } else {
         console.log('登录失败', res)
+        localStorage.removeItem("Uid");
+        localStorage.removeItem("loginInfo");
+        localStorage.removeItem("userPhone");
+        localStorage.removeItem("userPWD");
+        window.location.href = "/login"
       }
     })
   }
