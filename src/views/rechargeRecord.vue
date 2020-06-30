@@ -71,7 +71,7 @@ export default {
             data.time = res.args.recharge[i].payTime
             data.identity = i == "one" ? "直属玩家" : ( i == "two" ? "一级代理玩家" : "二级代理玩家") ;
             data.quota = res.args.recharge[i].money
-            data.rebate = res.args.recharge[i].rebate.money;
+            data.rebate = res.args.recharge[i].rebate;
             this.list.push(data);
           }
         }

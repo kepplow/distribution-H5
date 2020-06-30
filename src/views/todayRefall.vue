@@ -38,7 +38,8 @@ export default {
     this.WS.sendMsg({
       code: 40000,
       args: {
-        day: 1
+        day: 1,
+        uid:this.Uid
       }
     }).then(res => {
       console.log(res);

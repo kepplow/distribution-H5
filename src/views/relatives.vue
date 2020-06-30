@@ -119,7 +119,7 @@
       </div>
       <span class="iconfont icon-jiantou mr-1"></span>
     </div>
-    <div
+    <!-- <div
       class="flex justify-between align-center ml-2 py-1 border-bottom"
       @click="goto('partnerRecord')"
     >
@@ -129,7 +129,7 @@
         <span>合伙人充值记录</span>
       </div>
       <span class="iconfont icon-jiantou mr-1"></span>
-    </div>
+    </div> -->
     <!-- <div class="flex justify-between align-center ml-2 py-1 border-bottom" @click="goto('/chart')">
       <div class>
         <span class="iconfont icon-shourutongji font-lg vertical-middle mr-2"></span>
