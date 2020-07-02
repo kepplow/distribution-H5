@@ -75,7 +75,7 @@ export default {
 
       if (res) {
         this.WS.sendMsg({
-          code: 1200,
+          code: 40018,
           args: {
             phone: this.phone,
             password: this.password,

@@ -65,7 +65,7 @@ WBT.prototype.initWs = function () {
   let password = localStorage.getItem("userPWD");
   if (phone && phone !== 'undefined' && password && password !== 'undefined') {
     this.sendMsg({
-      code: 1200,
+      code: 40018,
       args: {
         phone,
         password,
