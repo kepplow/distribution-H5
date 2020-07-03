@@ -73,6 +73,7 @@ export default {
     },
     initList() {
       this.WS.sendMsg({ code: 30123, args: { uid: this.Uid } }).then(res => {
+          console.log(res);
         res.args.data.forEach(ele => {
           let ar = {
             text: ele.name,

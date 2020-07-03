@@ -19,7 +19,7 @@
       </van-cell-group>
       <div>
         剩余房卡数:
-        <span>323</span>
+        <span>{{ allCard }}</span>
       </div>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
@@ -35,7 +35,8 @@ export default {
       userId: "",
       nickName: "",
       cardNum: "",
-      isExit: 0
+      isExit: 0,
+      allCard: 0
     };
   },
   methods: {
@@ -80,7 +81,18 @@ export default {
           this.isExit = 0;
         }
       });
+    },
+    getRoomCard() {
+      this.WS.sendMsg({
+        code: 40021,
+        args: { uid: this.Uid }
+      }).then(res => {
+        this.allCard = res.args.cards;
+      });
     }
+  },
+  mounted() {
+    this.getRoomCard();
   }
 };
 </script>

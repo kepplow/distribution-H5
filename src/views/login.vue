@@ -56,7 +56,7 @@ export default {
       msg: "",
       show: false,
       phone: "18379460084",
-      password: "liao123456",
+      password: "liao123",
       Vcode: "",
       verifyCode: null
     };
