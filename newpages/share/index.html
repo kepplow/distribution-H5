@@ -201,6 +201,7 @@
 			params.creator = state[1]
 		}
 		// 微信环境用code换openid 显示按钮，可上传相册
+		getMpImageBase64();
 		if (params.code) {
 			// 获取openid
 			$.ajax({
@@ -214,7 +215,7 @@
 					console.log(data);
 					if (data && data.code == 0) {
 						openid = data.data.openid
-						getMpImageBase64();
+						
 					} else {
 						console.log("opind：" + data.message);
 					}
@@ -248,6 +249,7 @@
 					if (res.args && res.args.data) {
 						// 相册显示 creator
 						let data = JSON.parse(JSON.stringify(res.args.data));
+
 						// let data = {}
 						// data.players = [{
 						// 	url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
@@ -256,7 +258,7 @@
 						// 	]
 						// }]
 						data.players.unshift(data.creator);
-						console.log(data)
+						console.log(data);
 						data.players.forEach(item => {
 							let picList = '<div class="pic-box">';
 
@@ -324,6 +326,7 @@
 			var img = new Image();
 			// 将图片上传腾讯cos
 			function uploadCos(file) {
+				let blob = dataURLtoBlob(file);
 				cos.putObject({
 					Bucket: 'testlewan-1301954694',
 					/* 必须 */
@@ -332,7 +335,7 @@
 					Key: 'test1-pic',
 					/* 必须 */
 					StorageClass: 'STANDARD',
-					Body: file, // 上传文件对象
+					Body: blob, // 上传文件对象
 					onProgress: function (progressData) {
 						console.log(JSON.stringify(progressData));
 					}
@@ -371,7 +374,7 @@
 				drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
 				//上传到腾讯cos base64
 				var base64 = canvas.toDataURL("image/jpeg", quality); // 这里就拿到了压缩后的base64图片
-
+				
 				uploadCos(base64);
 				//blob对象
 				// canvas.toBlob(function (blob) {
@@ -503,6 +506,24 @@
 				val += String.fromCharCode(parseInt(arr[i], 16));
 			}
 			return val;
+		}
+
+
+		/**
+		 *Base64字符串转二进制
+		 */
+		function dataURLtoBlob(dataurl) {
+			var arr = dataurl.split(','),
+				mime = arr[0].match(/:(.*?);/)[1],
+				bstr = atob(arr[1]),
+				n = bstr.length,
+				u8arr = new Uint8Array(n);
+			while (n--) {
+				u8arr[n] = bstr.charCodeAt(n);
+			}
+			return new Blob([u8arr], {
+				type: mime
+			});
 		}
 	})()
 </script>
