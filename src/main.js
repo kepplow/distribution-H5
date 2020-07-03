@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
     next('/login');
   } else {
     // 已登录记录uid
-    Vue.prototype.Uid = 100008;
+    Vue.prototype.Uid = uid;
     next()
   }
   // next()

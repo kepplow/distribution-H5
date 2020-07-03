@@ -130,6 +130,10 @@ export default {
         width: 4.375rem;
         height: 4.375rem;
         margin-right: 1.25rem;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     .num {

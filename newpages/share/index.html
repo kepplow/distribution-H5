@@ -140,6 +140,8 @@
 </body>
 <script src="../js/cos-js-sdk-v5.min.js"></script>
 <script src="../js/megapix-image.js"></script>
+<script src="../js/md5.js"></script>
+
 <script>
 	var cos = new COS({
 		SecretId: 'AKIDsXw85DGzWsypcEbRlsEyUkiYDcMpiyd1',
@@ -249,7 +251,6 @@
 					if (res.args && res.args.data) {
 						// 相册显示 creator
 						let data = JSON.parse(JSON.stringify(res.args.data));
-
 						// let data = {}
 						// data.players = [{
 						// 	url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
@@ -316,7 +317,6 @@
 				})));
 			})
 		}
-
 		// 给file绑定事件，获取base64压缩图片
 		function getMpImageBase64() {
 			var eleFile = document.getElementById('file');
@@ -332,10 +332,10 @@
 					/* 必须 */
 					Region: 'ap-hongkong',
 					/* 存储桶所在地域，必须字段 */
-					Key: 'test1-pic',
+					Key: $.md5(new Date().toLocaleString()),
 					/* 必须 */
 					StorageClass: 'STANDARD',
-					Body: blob, // 上传文件对象
+					Body: file, // 上传文件对象
 					onProgress: function (progressData) {
 						console.log(JSON.stringify(progressData));
 					}

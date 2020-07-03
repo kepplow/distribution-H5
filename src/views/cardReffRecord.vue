@@ -64,14 +64,15 @@ export default {
           endIndex: startIndex + this.page.pagesize
         }
       }).then(res => {
+        console.log(res);
         if (res.args.log.length == 0) {
           this.tip = "没有更多了。。。";
           return;
         }
         res.args.log.forEach(v => {
           v.details = "购买者ID：" + v.buyUid + " 购买数量：" + v.num;
+          this.list.push(v);
         });
-        this.list = res.args.log;
       });
     },
     next() {

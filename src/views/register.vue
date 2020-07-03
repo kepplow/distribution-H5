@@ -83,7 +83,7 @@ export default {
         code: 40017,
         args: {
           phone: this.phone,
-          sms: "111111",
+          sms: this.Vcode,
           pwd: this.password,
           type: "agent"
         }

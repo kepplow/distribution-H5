@@ -56,7 +56,7 @@ export default {
       msg: "",
       show: false,
       phone: "18379460084",
-      password: "liao123456",
+      password: "liao123",
       Vcode: "",
       verifyCode: null
     };
@@ -75,7 +75,7 @@ export default {
 
       if (res) {
         this.WS.sendMsg({
-          code: 1200,
+          code: 40018,
           args: {
             phone: this.phone,
             password: this.password,
