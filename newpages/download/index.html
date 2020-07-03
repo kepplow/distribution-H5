@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <!-- 引入样式 -->
   <link rel="stylesheet" href="../css/animate.min.css" />
+  <script src="../js/jq.min.js"></script>
   <style>
     * {
       padding: 0;
@@ -70,6 +71,15 @@
       z-index: 2;
       cursor: pointer;
     }
+
+    .mask {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: 20;
+    }
   </style>
 </head>
 
@@ -78,8 +88,10 @@
     <img src="../images/bg.png" class="bg">
     <img src="../images/bg-2.png" class="bg-2 animate__animated animate__slideInLeft animate__faster">
     <img src="../images/text-1.png" class="text-1 animate__animated animate__fadeInLeftBig animate__fast">
-    <img src="../images/text-2.png" class="text-2 animate__animated animate__fadeInLeftBig animate__fast">
+    <img src="../images/text-3.png" class="text-2 animate__animated animate__fadeInLeftBig animate__fast">
     <img src="../images/download.png" class="btn animate__animated animate__zoomIn" id="btn">
+    <img src="../images/mask.png" class="mask" id="mask" style="display: none;">
+
   </div>
 </body>
 <script>
@@ -97,16 +109,133 @@
       isWeixin = (/MicroMessenger/ig).test(navigator.userAgent),
       openparam = window.location.search.substr(1);
     if (!isWeixin) {
+      // ios环境
       if ((isIos || isIpad) && !isAndroid) {
+        // 这里修改链接为真实下载链接 openparam 为 地址栏参数，不需要可去掉
         window.location = 'igof://com.jobnew.igof?' + openparam;
-      } else if (isAndroid) {
-        alert('igof://com.jobnew.igof/openwith?' + openparam);
-        window.location = 'igof://com.jobnew.igof/openwith?' + openparam;
+      } else if (isAndroid) { // 安卓环境
+        window.location = 'https://testlewan-1301954694.cos.ap-hongkong.myqcloud.com/downapk/android1.0.apk?' +
+          openparam;
       }
+
+    } else {
+      let mask = document.getElementById('mask');
+      mask.style.display = "block";
     }
 
   }
+  //---------------------------以下处理请求内容----------------------------------
 
+  var websocket;
+  var wsUri = "ws://27.50.169.38:7008/";
+
+
+  function init(str) {
+
+    output = document.getElementById("output");
+    websocket = new WebSocket(wsUri, "default-protocol");
+
+    websocket.onopen = function (evt) {
+      doSend(str);
+
+    };
+    websocket.onmessage = function (evt) {
+
+    };
+    websocket.onerror = function (evt) {
+
+    };
+    websocket.onclose = function (e) {
+      console.log('websocket 断开: ' + e.code + ' ' + e.reason + ' ' + e.wasClean)
+      console.log(e)
+    }
+  }
+
+  function send() {
+    doSend(document.getElementById("textID").value);
+  }
+
+  function enc(str) {
+    let c = String.fromCharCode(str.charCodeAt(0) + str.length);
+    for (let i = 1; i < str.length; i++) {
+      c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+    }
+    return stringToHex(c);
+  }
+
+  function stringToHex(str) {
+    let val = "";
+    for (let i = 0; i < str.length; i++) {
+      if (val == "")
+        val = str.charCodeAt(i).toString(16);
+      else
+        val += "," + str.charCodeAt(i).toString(16);
+    }
+    return val;
+  }
+
+  function hexToString(str) {
+    let val = "";
+    let arr = str.split(",");
+    for (let i = 0; i < arr.length; i++) {
+      val += String.fromCharCode(parseInt(arr[i], 16));
+    }
+    return val;
+  }
+
+  function dec(hex) {
+    let str = hexToString(hex);
+    let c = String.fromCharCode(str.charCodeAt(0) - str.length);
+    for (let i = 1; i < str.length; i++) {
+      c += String.fromCharCode(str.charCodeAt(i) - c.charCodeAt(i - 1));
+    }
+    return c;
+  }
+
+  function doSend(message) {
+
+    websocket.send(enc(message));
+
+  }
+
+  //window.addEventListener("load", init, false); 
+
+
+
+
+
+  let code = getQueryString('code');
+  let state = getQueryString('state');
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: "http://27.50.169.38:8084/getUserInfo",
+    data: {
+      code: code
+    },
+    success: function (msg) {
+
+
+
+      let data = msg.data;
+      let openid = data.openid;
+      let sex = data.sex;
+      let nickname = data.nickname;
+      let headimgurl = data.headimgurl;
+      init('{"code":2107,"args":{"openId":"' + openid + '","name":"' + nickname + '","headpic":"' + headimgurl +
+        '","preUid":' + state + '}}');
+
+
+
+    }
+  });
+
+  function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
 </script>
 
 </html>

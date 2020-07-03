@@ -120,11 +120,12 @@
 			<div class="pic-list">
 			</div>
 		</div>
-		<div class="mt-2">
+		<div class="mt-2" style="display: none;" id="upload">
 			<input type="file" name="file" id="file" class="inputfile" accept="image/*" />
 			<label for="file" class='btn btn-success'>选择图片上传到相册</label>
 			<img src="" id="show">
 		</div>
+		<div id="tip">请用微信打开上传相册图片</div>
 		<div class="table-box">
 			<div class="head">
 			</div>
@@ -139,6 +140,8 @@
 </body>
 <script src="../js/cos-js-sdk-v5.min.js"></script>
 <script src="../js/megapix-image.js"></script>
+<script src="../js/md5.js"></script>
+
 <script>
 	var cos = new COS({
 		SecretId: 'AKIDsXw85DGzWsypcEbRlsEyUkiYDcMpiyd1',
@@ -184,158 +187,124 @@
 		}
 		return url;
 	}
+
 	(function () {
-		function uploadCos(file) {
-			cos.putObject({
-				Bucket: 'testlewan-1301954694',
-				/* 必须 */
-				Region: 'ap-hongkong',
-				/* 存储桶所在地域，必须字段 */
-				Key: 'test1-pic',
-				/* 必须 */
-				StorageClass: 'STANDARD',
-				Body: file, // 上传文件对象
-				onProgress: function (progressData) {
-					console.log(JSON.stringify(progressData));
-				}
-			}, function (err, data) {
-				console.log(err || data);
-			});
-		}
-		var eleFile = document.getElementById('file');
-		// 压缩图片需要的一些元素和对象
-		var reader = new FileReader();
-		var imga = document.getElementById('show');
-		var img = new Image();
-		// base64地址图片加载完毕后      
-		img.onload = function () {
-			var originWidth = this.width, //image resize   压缩后的宽
-				originHeight = this.height,
-				maxWidth = 300,
-				maxHeight = 200,
-				quality = 0.8, //image quality  压缩质量
-				canvas = document.createElement('canvas'),
-				drawer = canvas.getContext("2d");
-			canvas.width = maxWidth;
-			canvas.height = originHeight / originWidth * maxWidth;
-			drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
-			//上传到腾讯cos base64
-			var base64 = canvas.toDataURL("image/jpeg", quality); // 这里就拿到了压缩后的base64图片
-			console.log(base64);
 
-			uploadCos(base64);
-			//blob对象
-			// canvas.toBlob(function (blob) {
-			// 	//console.log(blob)
-			// }, "image/jpeg", quality);
-			// var file = dataURLtoFile(base64, 'name');
-			imga.src = base64;
-
-			// 
-		};
-		//base64转file
-		//filename图片的名字dataurl是base64地址
-		function dataURLtoFile(dataurl, filename) {
-			var arr = dataurl.split(','),
-				mime = arr[0].match(/:(.*?);/)[1],
-				bstr = atob(arr[1]),
-				n = bstr.length,
-				u8arr = new Uint8Array(n);
-			while (n--) {
-				u8arr[n] = bstr.charCodeAt(n);
-			}
-			return new File([u8arr], filename, {
-				type: mime
-			});
-		}
-
-		// 文件base64化，以便获知图片原始尺寸
-		reader.onload = function () {
-			//reader.result就是base64
-			img.src = reader.result;
-		};
-		//addEventListener监听change事件
-		eleFile.addEventListener('change', function () {
-			file = this.files[0];
-			// 选择的文件是图片
-			if (file.type.indexOf("image") == 0) {
-				//console.log(file);
-				reader.readAsDataURL(file); //以数据url的方式读取文件内容
-			}
-		});
-
-
-		let WS = null
-		let query = window.location.search.substr(1);;
-
-		let params = {}
+		let WS = null;
+		let query = window.location.search.substr(1);
+		let openid = ''; // 用户的openid
+		let params = {}; // 地址栏参数
 		query.split('&').forEach(ele => {
 			params[ele.split('=')[0]] = ele.split('=')[1];
 		})
+		if (params.state) {
+			let state = params.state.split(',');
+			params.roundId = state[0]
+			params.creator = state[1]
+		}
+		// 微信环境用code换openid 显示按钮，可上传相册
+		if (params.code) {
+			// 获取openid
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: 'http://27.50.169.38:8084/getUserInfo',
+				data: {
+					code: params.code
+				},
+				success: function (data) {
+					console.log(data);
+					if (data && data.code == 0) {
+						openid = data.data.openid
+						getMpImageBase64();
+					} else {
+						console.log("opind：" + data.message);
+					}
 
+				}
+			})
+			// 非微信环境无code 不显示上传按钮
+		} else {
+			$('#upload')[0].style.display = 'none';
+			$('#tip')[0].style.display = 'block';
+		}
+		init();
+		// 初始化websocket
 		function init() {
 			if (WS && WS.close) {
 				WS.close()
 			}
-			WS = new WebSocket('ws://47.105.60.123:7008', "default-protocol");
+			// 创建对象
+			WS = new WebSocket('ws://27.50.169.38:7008', "default-protocol");
 			WS.onopen = function (e) {
 				console.log('连接成功！');
 
 			}
+			// 接收消息并处理
 			WS.onmessage = function (e) {
 				console.log(JSON.parse(dec(e)));
+
 				let res = JSON.parse(dec(e));
-				if (res.args && res.args.data) {
-					// 相册显示 creator
-					// let data = JSON.parse(JSON.stringify(res.args.data));
-					let data = {}
-					data.players = [{
-						url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-							'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-							'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
-						]
-					}]
-					data.players.unshift(data.creator);
-					console.log(data)
-					data.players.forEach(item => {
-						let picList = '<div class="pic-box">';
 
-						if (item) {
-							item.url.forEach(ele => {
-								picList += `<img src="${ele}" class="img-thumbnail">`
-							})
-							picList += '</div>';
+				if (res.code == 40020) {
+					if (res.args && res.args.data) {
+						// 相册显示 creator
+						let data = JSON.parse(JSON.stringify(res.args.data));
+						// let data = {}
+						// data.players = [{
+						// 	url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
+						// 		'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
+						// 		'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
+						// 	]
+						// }]
+						data.players.unshift(data.creator);
+						console.log(data)
+						data.players.forEach(item => {
+							let picList = '<div class="pic-box">';
+
+							if (item) {
+								item.url.forEach(ele => {
+									picList += `<img src="${ele}" class="img-thumbnail">`
+								})
+								picList += '</div>';
 
 
-							let album = $(`<div class="pic-item">
+								let album = $(`<div class="pic-item">
 								<img src="${item.headpic || ''}" class="img-circle">
 								<span>${item.name}</span>
 							</div>${picList}`);
-							$('.pic-list').append(album);
-						}
+								$('.pic-list').append(album);
+							}
 
-					})
+						})
 
-					// 表格不显示 creator
+						// 表格不显示 creator
 
-					$('.table-box .head').append($(`
+						$('.table-box .head').append($(`
 							<span>${data.time}</span>
 							<span>${data.round}局</span>
 							<span>房间号:<span>${data.roomId}</span></span>
 					`))
-					list = ''
-					res.args.data.players.forEach(item => {
-						list += `<div class="info-item">
+						list = ''
+						res.args.data.players.forEach(item => {
+							list += `<div class="info-item">
 											<span class="name">${item.name}${item.fz ? '(房主)': ''}</span>
 											<span>${item.score}</span>
 										</div>`
-					})
-					$('.table-box .info').append($(list))
+						})
+						$('.table-box .info').append($(list))
+					}
+				} else if (res.code == 40023) {
+					if (res.args && res.args.result == 0) {
+						alert('上传成功');
+					} else {
+						alert('上传失败');
+					}
 				}
 
 			}
 			WS.sendNum = 0;
-			console.log(params)
+			// 连接完成后发送消息
 			waitForSocketConnection(WS, function () {
 				console.log("message sent!!!");
 				WS.send(enc(JSON.stringify({
@@ -347,34 +316,110 @@
 				})));
 			})
 		}
-		init();
-		let data = {}
-		data.players = [{
-			url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-				'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-				'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
-			]
-		}]
-		data.players.unshift(data.creator);
-		console.log(data)
-		data.players.forEach(item => {
-			let picList = '<div class="pic-box">';
+		// 给file绑定事件，获取base64压缩图片
+		function getMpImageBase64() {
+			var eleFile = document.getElementById('file');
+			// 压缩图片需要的一些元素和对象
+			var reader = new FileReader();
+			var imga = document.getElementById('show');
+			var img = new Image();
+			// 将图片上传腾讯cos
+			function uploadCos(file) {
+				cos.putObject({
+					Bucket: 'testlewan-1301954694',
+					/* 必须 */
+					Region: 'ap-hongkong',
+					/* 存储桶所在地域，必须字段 */
+					Key: $.md5(new Date().toLocaleString()),
+					/* 必须 */
+					StorageClass: 'STANDARD',
+					Body: file, // 上传文件对象
+					onProgress: function (progressData) {
+						console.log(JSON.stringify(progressData));
+					}
+				}, function (err, data) {
+					if (!err && data.statusCode === 200) {
+						imga.src = file;
+						console.log(openid, data.Location);
+						if (openid && data.Location) {
+							waitForSocketConnection(WS, function () {
+								WS.send(enc(JSON.stringify({
+									"code": 40023,
+									"args": {
+										"openId": openid,
+										"url": 'https://' + data.Location
+									}
+								})));
+							})
 
-			if (item) {
-				item.url.forEach(ele => {
-					picList += `<img src="${ele}" class="img-thumbnail">`
-				})
-				picList += '</div>';
+						}
 
-
-				let album = $(`<div class="pic-item">
-								<img src="${item.headpic || ''}" class="img-circle">
-								<span>${item.name}</span>
-							</div>${picList}`);
-				$('.pic-list').append(album);
+					}
+				});
 			}
 
-		})
+			// base64地址图片加载完毕后      
+			img.onload = function () {
+				var originWidth = this.width, //image resize   压缩后的宽
+					originHeight = this.height,
+					maxWidth = 300,
+					maxHeight = 200,
+					quality = 0.8, //image quality  压缩质量
+					canvas = document.createElement('canvas'),
+					drawer = canvas.getContext("2d");
+				canvas.width = maxWidth;
+				canvas.height = originHeight / originWidth * maxWidth;
+				drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
+				//上传到腾讯cos base64
+				var base64 = canvas.toDataURL("image/jpeg", quality); // 这里就拿到了压缩后的base64图片
+
+				uploadCos(base64);
+				//blob对象
+				// canvas.toBlob(function (blob) {
+				// 	//console.log(blob)
+				// }, "image/jpeg", quality);
+				// var file = dataURLtoFile(base64, 'name');
+
+
+				// 
+			};
+			//base64转file
+			//filename图片的名字dataurl是base64地址
+			// function dataURLtoFile(dataurl, filename) {
+			// 	var arr = dataurl.split(','),
+			// 		mime = arr[0].match(/:(.*?);/)[1],
+			// 		bstr = atob(arr[1]),
+			// 		n = bstr.length,
+			// 		u8arr = new Uint8Array(n);
+			// 	while (n--) {
+			// 		u8arr[n] = bstr.charCodeAt(n);
+			// 	}
+			// 	return new File([u8arr], filename, {
+			// 		type: mime
+			// 	});
+			// }
+
+			// 文件base64化，以便获知图片原始尺寸
+			reader.onload = function () {
+				//reader.result就是base64
+				img.src = reader.result;
+			};
+			//addEventListener监听change事件
+			eleFile.addEventListener('change', function () {
+				file = this.files[0];
+				// 选择的文件是图片
+				if (file.type.indexOf("image") == 0) {
+					//console.log(file);
+					reader.readAsDataURL(file); //以数据url的方式读取文件内容
+				}
+			});
+			$('#upload')[0].style.display = 'block';
+			$('#tip')[0].style.display = 'none';
+		}
+
+
+
+		// 点击图片显示大图，点击蒙层关闭
 		window.onload = function () {
 			$('.pic-list').on('click', '.img-thumbnail', function (e) {
 				console.log('点击了图片', e.target.src)
