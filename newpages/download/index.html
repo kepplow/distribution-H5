@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <!-- 引入样式 -->
   <link rel="stylesheet" href="../css/animate.min.css" />
+  <script src="../js/jq.min.js"></script>
   <style>
     * {
       padding: 0;
@@ -123,8 +124,8 @@
     }
 
   }
-
   //---------------------------以下处理请求内容----------------------------------
+
   var websocket;
   var wsUri = "ws://27.50.169.38:7008/";
 
@@ -185,7 +186,7 @@
   function dec(hex) {
     let str = hexToString(hex);
     let c = String.fromCharCode(str.charCodeAt(0) - str.length);
-    for (let i = 1; i <script str.length; i++) {
+    for (let i = 1; i < str.length; i++) {
       c += String.fromCharCode(str.charCodeAt(i) - c.charCodeAt(i - 1));
     }
     return c;

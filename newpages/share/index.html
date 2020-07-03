@@ -196,7 +196,7 @@
 			params[ele.split('=')[0]] = ele.split('=')[1];
 		})
 		if (params.state) {
-			let state = params.state.split(',');
+			let state = decodeURIComponent(params.state).split(',');
 			params.roundId = state[0]
 			params.creator = state[1]
 		}
@@ -247,14 +247,14 @@
 				if (res.code == 40020) {
 					if (res.args && res.args.data) {
 						// 相册显示 creator
-						// let data = JSON.parse(JSON.stringify(res.args.data));
-						let data = {}
-						data.players = [{
-							url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-								'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-								'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
-							]
-						}]
+						let data = JSON.parse(JSON.stringify(res.args.data));
+						// let data = {}
+						// data.players = [{
+						// 	url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
+						// 		'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
+						// 		'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
+						// 	]
+						// }]
 						data.players.unshift(data.creator);
 						console.log(data)
 						data.players.forEach(item => {
@@ -417,34 +417,6 @@
 		}
 
 
-		// 假数据
-		let data = {}
-		data.players = [{
-			url: ['https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-				'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg',
-				'https://s0.2mdn.net/9419468/r-summer_promo_range_160x600.jpg'
-			]
-		}]
-		data.players.unshift(data.creator);
-		console.log(data)
-		data.players.forEach(item => {
-			let picList = '<div class="pic-box">';
-
-			if (item) {
-				item.url.forEach(ele => {
-					picList += `<img src="${ele}" class="img-thumbnail">`
-				})
-				picList += '</div>';
-
-
-				let album = $(`<div class="pic-item">
-								<img src="${item.headpic || ''}" class="img-circle">
-								<span>${item.name}</span>
-							</div>${picList}`);
-				$('.pic-list').append(album);
-			}
-
-		})
 
 		// 点击图片显示大图，点击蒙层关闭
 		window.onload = function () {
