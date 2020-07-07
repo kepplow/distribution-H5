@@ -77,7 +77,7 @@ export default {
         this.WS.sendMsg({
           code: 40018,
           args: {
-            phone: this.phone,
+            phone: this.customTrim(this.phone.toString()),
             password: this.password,
             type: "agent"
           }
@@ -98,11 +98,11 @@ export default {
               this.$router.push("/home");
             }, 500);
           } else {
-            if(res.args.result == 401){
+            if (res.args.result == 401) {
               Toast("账户不存在！");
               return;
             }
-            if(res.args.result == 402){
+            if (res.args.result == 402) {
               Toast("密码错误！");
               return;
             }
@@ -117,6 +117,9 @@ export default {
         Toast("验证码错误！");
         return;
       }
+    },
+    customTrim(strSource) {
+      return strSource.replace(/\s+/g, "");
     }
   },
   mounted() {

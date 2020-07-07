@@ -82,7 +82,7 @@ export default {
       this.WS.sendMsg({
         code: 40017,
         args: {
-          phone: this.phone,
+          phone: this.customTrim(this.phone.toString()),
           sms: this.Vcode,
           pwd: this.password,
           type: "agent"
@@ -110,6 +110,9 @@ export default {
           }
         }
       });
+    },
+    customTrim(strSource) {
+      return strSource.replace(/\s+/g,"");
     }
   }
 };
