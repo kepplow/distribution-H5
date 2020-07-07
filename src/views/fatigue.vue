@@ -7,7 +7,6 @@
             <th>亲友圈</th>
             <th>耗卡比</th>
             <th>最佳场次线</th>
-            <th>游戏</th>
             <th>疲劳值</th>
             <th>时间警告</th>
             <th>操作</th>
@@ -22,7 +21,6 @@
             </td>
             <td>{{i.cardratio}}</td>
             <td>{{i.fraction}}</td>
-            <td>{{i.game}}</td>
             <td>{{i.warning}}</td>
             <td>{{i.time}}</td>
             <td>

@@ -27,7 +27,7 @@
             <th>姓名</th>
             <th>总成绩</th>
             <th>耗卡</th>
-            <th>游戏</th>
+            <th>疲劳值</th>
             <th>状态</th>
             <th>操作</th>
           </tr>
@@ -41,7 +41,7 @@
             </td>
             <td>{{i.warning}}</td>
             <td>{{i.car}}</td>
-            <td>{{i.game_type}}</td>
+            <td>{{i.fatigue}}</td>
             <td>{{i.is_lock_show}} （只是亲友圈锁定，可以解锁）、正常、平台封印</td>
             <td>
               <a @click="lockAction(i,v)">加锁（解锁）</a>|
