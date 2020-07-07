@@ -55,8 +55,8 @@ export default {
     return {
       msg: "",
       show: false,
-      phone: "18379460084",
-      password: "liao123",
+      phone: "",
+      password: "",
       Vcode: "",
       verifyCode: null
     };
@@ -86,15 +86,26 @@ export default {
           if (res.args.uid) {
             // this.msg = "";
             // this.show = true;
-             Toast("登录成功！");
+            Toast("登录成功！");
             localStorage.setItem("Uid", JSON.stringify(res.args.uid));
             localStorage.setItem("loginInfo", JSON.stringify(res.args));
             localStorage.setItem("userPhone", this.phone);
             localStorage.setItem("userPWD", this.password);
+
+            //保存一下账号
+            localStorage.setItem("phone", this.phone);
             setTimeout(() => {
               this.$router.push("/home");
             }, 500);
           } else {
+            if(res.args.result == 401){
+              Toast("账户不存在！");
+              return;
+            }
+            if(res.args.result == 402){
+              Toast("密码错误！");
+              return;
+            }
             // this.msg = "";
             Toast("登录失败！");
             // this.show = true;
@@ -113,9 +124,13 @@ export default {
     this.$nextTick(() => {
       this.verifyCode = new GVerify({
         id: "picyzm",
-        type: "blend"
+        type: "number"
       });
     });
+    try {
+      let phone = localStorage.getItem("phone");
+      this.phone = phone;
+    } catch ($e) {}
   }
 };
 </script>

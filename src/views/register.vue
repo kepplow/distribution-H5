@@ -91,7 +91,23 @@ export default {
         if (res.args && res.args.result == 0) {
           Toast.success("注册成功！");
         } else {
-          Toast.fail("注册失败！");
+          try {
+            if (res.args.result == 46) {
+              throw new Error("手机号不合法");
+            }
+            if (res.args.result == 48) {
+              throw new Error("验证码错误");
+            }
+            if (res.args.result == 55) {
+              throw new Error("该手机未绑定");
+            }
+            if (res.args.result == 205) {
+              throw new Error("代理等级不足");
+            }
+            Toast.fail("注册失败！");
+          } catch (e) {
+            Toast.fail(e.message);
+          }
         }
       });
     }
