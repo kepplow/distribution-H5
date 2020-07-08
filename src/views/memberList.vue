@@ -45,7 +45,8 @@
             <td>{{i.is_lock_show}} （只是亲友圈锁定，可以解锁）、正常、平台封印</td>
             <td>
               <a @click="lockAction(i,v)">加锁（解锁）</a>|
-              <a @click="detailed(i)">明细</a>
+              <a @click="detailed(i)">明细</a>|
+              <a @click="setFatigue(i,v)">设置疲劳值</a>
             </td>
           </tr>
         </tbody>
@@ -65,6 +66,14 @@
         <van-field v-model="detaData.winrate" label="最佳场次" readonly />
       </van-form>
     </van-popup>
+
+    <!-- 弹出层 -->
+    <van-popup v-model="Fatigue" class="deta">
+      <van-form class="form">
+        <van-field v-model="set.fatigue" label="疲劳值:" />
+        <van-button round style="width:100%;margin-top:15px" type="primary" @click="confirm">确认</van-button>
+      </van-form>
+    </van-popup>
   </div>
 </template>
 
@@ -78,6 +87,12 @@ import { Popup } from "vant";
 export default {
   data() {
     return {
+      Fatigue: false,
+      set: {
+        index: 0,
+        id: 0,
+        fatigue: 0
+      },
       deta: false,
       show: false,
       actions: [
@@ -223,6 +238,32 @@ export default {
         .catch(() => {
           // on cancel
         });
+    },
+    setFatigue(row, v) {
+      this.set.index = v;
+      this.set.id = row.id;
+      this.Fatigue = true;
+    },
+    confirm() {
+      if (this.set.fatigue > 0) {
+        this.set.fatigue = ~this.set.fatigue + 1;
+      }
+      this.WS.sendMsg({
+        code: 30140,
+        args: {
+          uid: this.Uid,
+          id: this.set.id,
+          fatigue: this.set.fatigue
+        }
+      }).then(res => {
+        if (res.args.result == 0) {
+          this.Fatigue = false;
+          this.list[this.set.index].fatigue = this.set.fatigue;
+          Toast.success(res.args.msg);
+        } else {
+          Toast.success("修改失败");
+        }
+      });
     }
   },
   mounted() {
@@ -275,7 +316,7 @@ export default {
   background-color: white;
   border-radius: 10px;
 }
-.deta{
+.deta {
   width: 80%;
   border-radius: 10px;
 }

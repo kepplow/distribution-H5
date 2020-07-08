@@ -172,6 +172,14 @@ const routes = [{
   }
 },
 {
+  path: '/nextLevel',
+  name: 'nextLevel',
+  component: () => import('../views/nextLevel.vue'),
+  meta: {
+    title: '下级成员列表'
+  }
+},
+{
   path: '/makeOver',
   name: 'makeOver',
   component: () => import('../views/makeOver.vue'),

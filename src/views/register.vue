@@ -90,10 +90,35 @@ export default {
       }).then(res => {
         if (res.args && res.args.result == 0) {
           Toast.success("注册成功！");
+
+          this.sendMsg({
+            code: 40018,
+            args: {
+              phone: this.customTrim(this.phone.toString()),
+              password: this.password,
+              type: "agent"
+            }
+          }).then(data => {
+            if (data.args.uid) {
+              localStorage.setItem("Uid", JSON.stringify(data.args.uid));
+              localStorage.setItem("loginInfo", JSON.stringify(data.args));
+              localStorage.setItem("userPhone", this.phone);
+              localStorage.setItem("userPWD", this.password);
+
+              //保存一下账号
+              localStorage.setItem("phone", this.phone);
+              setTimeout(() => {
+                this.$router.push("/home");
+              }, 500);
+            }
+          });
         } else {
           try {
             if (res.args.result == 46) {
               throw new Error("手机号不合法");
+            }
+            if (res.args.result == 47) {
+              throw new Error("手机号已经被注册");
             }
             if (res.args.result == 48) {
               throw new Error("验证码错误");
@@ -112,7 +137,7 @@ export default {
       });
     },
     customTrim(strSource) {
-      return strSource.replace(/\s+/g,"");
+      return strSource.replace(/\s+/g, "");
     }
   }
 };

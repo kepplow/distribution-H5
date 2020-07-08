@@ -11,7 +11,7 @@
     </van-dropdown-menu>
 
     <van-tabs @click="tabClick" v-model="level">
-      <van-tab title="直属玩家">
+      <van-tab title="二级玩家">
         <div class="detailBox" v-for="(item,index) in data" :key="index">
           <div class="flex">
             <div class="img">
@@ -27,8 +27,8 @@
           </div>
         </div>
       </van-tab>
-      <van-tab title="直属代理">
-        <div class="detailBox" v-for="(item,index) in data" :key="index" @click="openNew(item.uid)">
+      <van-tab title="二级代理">
+        <div class="detailBox" v-for="(item,index) in data" :key="index">
           <div class="flex">
             <div class="img">
               <img :src="item.head_pic" />
@@ -47,6 +47,7 @@
     </van-tabs>
 
     <div class="botton" @click="next">{{ tip }}</div>
+    <van-button id="f_menu" type="primary" @click="goback">后退</van-button>
   </div>
 </template>
 
@@ -73,16 +74,25 @@ export default {
         pageNum: 1,
         pagesize: 10
       },
-      level: 0
+      level: 0,
+      agentUid: 0
     };
   },
   methods: {
     onSearch() {
       this.page.pageNum = 1;
       this.tip = "点击加载更多。。。";
+      this.isMore = true;
+      this.page.pageNum = 1;
+      this.page.pagesize = 10;
+      this.data = [];
       this.getData();
     },
     changeSearch() {
+      this.isMore = true;
+      this.page.pageNum = 1;
+      this.page.pagesize = 10;
+      this.data = [];
       this.getData();
     },
     next() {
@@ -95,11 +105,10 @@ export default {
     getData() {
       let startIndex = (this.page.pageNum - 1) * this.page.pagesize;
       this.WS.sendMsg({
-        code: 40002,
+        code: 40024,
         args: {
           agentLevel: this.level,
-          uid: this.Uid,
-          // uid: 100051,
+          uid: this.agentUid,
           startIndex: (this.page.pageNum - 1) * this.page.pagesize,
           endIndex: this.page.pagesize,
           type: this.sort
@@ -127,11 +136,15 @@ export default {
       this.data = [];
       this.getData();
     },
-    openNew(uid) {
-      this.$router.push({ name: "nextLevel", query: { uid: uid } });
+    goback() {
+      window.history.go(-1);
     }
   },
   beforeMount() {
+    this.agentUid = this.$route.query.uid;
+    if (this.agentUid == 0) {
+      this.goback();
+    }
     this.getData();
   }
 };
@@ -178,7 +191,7 @@ export default {
         height: 4.375rem;
         margin-right: 1.25rem;
         img {
-          margin-top: 10px;
+          margin-top: 0.625rem;
           vertical-align: middle;
           width: 100%;
           height: 100%;
@@ -206,5 +219,23 @@ export default {
   text-align: center;
   font-size: 14px;
   color: rgb(200, 200, 200);
+}
+#f_menu {
+  position: fixed;
+  bottom: 50px;
+  right: 15px;
+  width: 60px;
+  height: 60px;
+  background: black;
+  border-radius: 50%;
+  opacity: 0.75;
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  font-size: 12px;
+  cursor: pointer;
+  span{
+    width: 50px;
+  }
 }
 </style>
