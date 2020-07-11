@@ -39,11 +39,14 @@
       <div>总金额: {{ allMoney }}元</div>
       <div>总笔数：{{ allNum }}</div>
     </div>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Pagination } from 'vant';
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -55,6 +58,9 @@ export default {
         pageNum:1
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     toIndexPage() {

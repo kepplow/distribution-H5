@@ -44,12 +44,15 @@
         </div>
       </van-form>
     </van-overlay>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { DatetimePicker } from "vant";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -87,6 +90,9 @@ export default {
         pageSize: 10
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     Submit() {
@@ -131,7 +137,7 @@ export default {
       let data = { code: 30122, args: { uid: this.Uid } };
       data.args.id = this.form.id;
       data.args.time = this.form.time;
-      data.args.warning = this.form.warning;
+      data.args.warning = ~this.form.warning+1;
       data.args.cardratio = this.form.cardratio;
       data.args.fraction = this.form.fraction;
       this.WS.sendMsg(data).then(res => {

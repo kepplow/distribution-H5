@@ -13,7 +13,7 @@
       </div>
     </div>
     <div>
-      <van-notice-bar left-icon="volume-o" :scrollable="true" :text="notice" />
+      <van-notice-bar left-icon="volume-o" :scrollable="true" :text="notice" @click="Jump" />
     </div>
     <div>
       <div class="flex justify-between align-center border-bottom px-1 py-2" @click="show">
@@ -51,11 +51,13 @@
 
     <!-- bottomBar -->
     <bottom-bar></bottom-bar>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import bottomBar from "../components/common/bottomBar.vue";
+import flush from "../components/common/flush.vue";
 import { Dialog } from "vant";
 import { NoticeBar } from "vant";
 import { Toast } from "vant";
@@ -78,7 +80,8 @@ export default {
   },
 
   components: {
-    bottomBar
+    bottomBar,
+    flush
   },
   methods: {
     /**
@@ -152,6 +155,9 @@ export default {
         that.bean = res.args.bean || 0;
         that.result = res.args.result;
       });
+    },
+    Jump(){
+      this.$router.push("/notice");;
     }
   },
   beforeMount() {

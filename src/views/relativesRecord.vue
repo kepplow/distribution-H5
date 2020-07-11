@@ -93,10 +93,14 @@
         </tbody>
       </table>
     </van-dialog>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -126,6 +130,9 @@ export default {
       },
       list: []
     };
+  },
+  components: {
+    flush
   },
   methods: {
     more() {

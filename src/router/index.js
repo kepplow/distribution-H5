@@ -210,6 +210,22 @@ const routes = [{
   meta: {
     title: '疲劳管理'
   }
+},
+{
+  path: '/notice',
+  name: 'notice',
+  component: () => import('../views/notice.vue'),
+  meta: {
+    title: '通知'
+  }
+},
+{
+  path: '/QRCode',
+  name: 'QRCode',
+  component: () => import('../views/QRCode.vue'),
+  meta: {
+    title: '专属二维码'
+  }
 }
 ]
 

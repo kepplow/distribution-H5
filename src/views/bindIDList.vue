@@ -32,12 +32,14 @@
     </div>
 
     <div class="botton" @click="nextPage">{{ tip }}</div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Search } from "vant";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -50,6 +52,9 @@ export default {
         pageSize: 20
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onSearch() {

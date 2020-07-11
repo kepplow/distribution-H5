@@ -17,13 +17,14 @@
         </div>
       </div>
     </div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Dialog } from "vant";
 import { Toast } from "vant";
-
+import flush from "../components/common/flush.vue";
 export default {
   data() {
     return {
@@ -36,6 +37,9 @@ export default {
         this.list = JSON.parse(JSON.stringify(res.args.data));
       }
     });
+  },
+  components: {
+    flush
   },
   methods: {
     rechar(data) {

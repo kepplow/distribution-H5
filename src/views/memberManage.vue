@@ -23,30 +23,34 @@
     </div>
     <!-- bottomBar -->
     <bottomBar></bottomBar>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import bottomBar from "../components/common/bottomBar";
+import flush from "../components/common/flush.vue";
 export default {
   data() {
     return {};
   },
   components: {
-    bottomBar
+    bottomBar,
+    flush
   },
   methods: {
     to(path) {
       this.$router.push({ name: path });
     },
     getQRCode() {
-      this.WS.sendMsg({
-        code: 40003,
-        args: {}
-      }).then(res => {
-        console.log(res);
-        window.location.href = res.args.url;
-      });
+      // this.WS.sendMsg({
+      //   code: 40003,
+      //   args: {}
+      // }).then(res => {
+      //   console.log(res);
+      //   window.location.href = res.args.url;
+      // });
+      this.$router.push("/QRCode");
     }
   }
 };

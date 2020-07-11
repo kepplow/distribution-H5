@@ -26,11 +26,13 @@
     </div>
 
     <div class="botton" @click="next">{{ tip }}</div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Search } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -43,6 +45,9 @@ export default {
         pagesize: 10
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onSearch() {

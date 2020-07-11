@@ -25,6 +25,7 @@
         <thead>
           <tr>
             <th>姓名</th>
+            <th>亲友圈</th>
             <th>总成绩</th>
             <th>耗卡</th>
             <th>疲劳值</th>
@@ -39,6 +40,7 @@
               <br />
               <span>ID:{{i.id}}</span>
             </td>
+            <td>{{i.name}}</td>
             <td>{{i.warning}}</td>
             <td>{{i.car}}</td>
             <td>{{i.fatigue}}</td>
@@ -74,6 +76,8 @@
         <van-button round style="width:100%;margin-top:15px" type="primary" @click="confirm">确认</van-button>
       </van-form>
     </van-popup>
+
+    <flush></flush>
   </div>
 </template>
 
@@ -83,6 +87,7 @@ import { Pagination } from "vant";
 import { Dialog } from "vant";
 import { Toast } from "vant";
 import { Popup } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -139,6 +144,9 @@ export default {
         winrate: ""
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onSelect(item) {

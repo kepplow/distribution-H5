@@ -140,11 +140,13 @@
     </div> -->
     <footer></footer>
     <bottomBar></bottomBar>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import bottomBar from "../components/common/bottomBar";
+import flush from "../components/common/flush.vue";
 export default {
   name: "relatives",
   data() {
@@ -153,7 +155,8 @@ export default {
     };
   },
   components: {
-    bottomBar
+    bottomBar,
+    flush
   },
   methods: {
     goto(path) {

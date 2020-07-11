@@ -23,12 +23,16 @@
       </div>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
+    
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Field } from "vant";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -38,6 +42,9 @@ export default {
       isExit: 0,
       allCard: 0
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onConfirm(value) {

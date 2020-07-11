@@ -44,10 +44,13 @@
       <div>总笔数：{{ biShu }}</div>
       <div>总收益：{{ rebate }}</div>
     </div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -86,7 +89,9 @@ export default {
       this.list = data;
     });
   },
-
+  components: {
+    flush
+  },
   methods: {
     toIndexPage() {
       this.$router.go(-1);

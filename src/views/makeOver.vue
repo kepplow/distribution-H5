@@ -19,6 +19,8 @@
       </van-dropdown-menu>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定转让</van-button>
+
+    <flush></flush>
   </div>
 </template>
 
@@ -26,6 +28,7 @@
 import { Field } from "vant";
 import { DropdownMenu, DropdownItem } from "vant";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -37,6 +40,9 @@ export default {
       showPicker: false,
       isExit: 0
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onConfirm(value) {

@@ -44,12 +44,16 @@
         </van-col>
       </van-row>
     </div>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Field } from "vant";
 import { Button } from "vant";
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -60,6 +64,9 @@ export default {
         pageSize: 10
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     search() {

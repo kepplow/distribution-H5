@@ -12,11 +12,14 @@
       <van-field v-model="nickname" label="昵称：" readonly/>
     </van-cell-group>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -27,6 +30,9 @@ export default {
     };
   },
   mounted() {},
+  components: {
+    flush
+  },
   methods: {
     submit() {
       if (this.userID == "") {

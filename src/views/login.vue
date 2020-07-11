@@ -43,12 +43,15 @@
     <van-popup v-model="show">
       <div class="py-1 px-2 around">{{msg}}</div>
     </van-popup>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import "../../public/gVerify/gVerify";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -60,6 +63,9 @@ export default {
       Vcode: "",
       verifyCode: null
     };
+  },
+  components: {
+    flush
   },
   methods: {
     goto(path) {

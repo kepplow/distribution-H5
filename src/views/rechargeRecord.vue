@@ -101,12 +101,15 @@
       <div>总笔数：{{ allMoney }}</div>
       <div>总收益：{{ rebate }}</div>
     </div>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Pagination } from "vant";
 import { DatetimePicker } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -151,6 +154,9 @@ export default {
         pageNum: 1
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onConfirm(time) {

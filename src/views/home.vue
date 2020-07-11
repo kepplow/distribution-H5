@@ -46,12 +46,16 @@
     </van-button>
     <!-- bottomBar -->
     <bottomBar></bottomBar>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import bottomBar from "../components/common/bottomBar";
 import { Button } from "vant";
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -60,7 +64,8 @@ export default {
     };
   },
   components: {
-    bottomBar
+    bottomBar,
+    flush
   },
   beforeMount() {
     const user = JSON.parse(localStorage.getItem("loginInfo"));

@@ -62,10 +62,13 @@
         </div>
       </div>
     </div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -89,6 +92,9 @@ export default {
       },
       currentPage: 1
     };
+  },
+  components: {
+    flush
   },
   methods: {
     toApp () {

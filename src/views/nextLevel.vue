@@ -47,14 +47,15 @@
     </van-tabs>
 
     <div class="botton" @click="next">{{ tip }}</div>
-    <van-button id="f_menu" type="primary" @click="goback">后退</van-button>
+    <flush></flush>
+    <van-button class="f_menu" type="primary" @click="goback">后退</van-button>
   </div>
 </template>
 
 <script>
 import { Button } from "vant";
 import { DropdownMenu, DropdownItem, Search, Tab, Tabs } from "vant";
-
+import flush from "../components/common/flush.vue";
 export default {
   data() {
     return {
@@ -77,6 +78,9 @@ export default {
       level: 0,
       agentUid: 0
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onSearch() {
@@ -220,7 +224,7 @@ export default {
   font-size: 14px;
   color: rgb(200, 200, 200);
 }
-#f_menu {
+.f_menu {
   position: fixed;
   bottom: 50px;
   right: 15px;
@@ -237,5 +241,8 @@ export default {
   span{
     width: 50px;
   }
+}
+.flush{
+  bottom: 110px;
 }
 </style>

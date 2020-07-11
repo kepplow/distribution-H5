@@ -49,11 +49,13 @@
         <van-button round block type="info" native-type="submit">确定</van-button>
       </div>
     </van-form>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -64,6 +66,9 @@ export default {
       password: "",
       repeatPassword: ""
     };
+  },
+  components: {
+    flush
   },
   methods: {
     getCode() {

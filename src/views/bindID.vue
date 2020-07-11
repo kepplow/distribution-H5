@@ -19,12 +19,16 @@
       </van-dropdown-menu>
     </div>
     <van-button type="primary" class="btn" @click="submit" size="large">确定</van-button>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Field } from "vant";
 import { Toast } from "vant";
+import flush from "../components/common/flush.vue";
+
 export default {
   data() {
     return {
@@ -35,6 +39,9 @@ export default {
       showPicker: false,
       isExit: 0
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onConfirm(value) {
@@ -73,7 +80,7 @@ export default {
     },
     initList() {
       this.WS.sendMsg({ code: 30123, args: { uid: this.Uid } }).then(res => {
-          console.log(res);
+        console.log(res);
         res.args.data.forEach(ele => {
           let ar = {
             text: ele.name,

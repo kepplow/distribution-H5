@@ -47,13 +47,14 @@
     </van-tabs>
 
     <div class="botton" @click="next">{{ tip }}</div>
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { Button } from "vant";
 import { DropdownMenu, DropdownItem, Search, Tab, Tabs } from "vant";
-
+import flush from "../components/common/flush.vue";
 export default {
   data() {
     return {
@@ -75,6 +76,9 @@ export default {
       },
       level: 0
     };
+  },
+  components: {
+    flush
   },
   methods: {
     onSearch() {

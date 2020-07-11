@@ -31,12 +31,15 @@
       </table>
       <div class="botton" @click="next">{{ tip }}</div>
     </div>
+
+    <flush></flush>
   </div>
 </template>
 
 <script>
 import { DatetimePicker } from "vant";
 import laydate from "../../public/laydate/laydate";
+import flush from "../components/common/flush.vue";
 
 export default {
   data() {
@@ -67,6 +70,9 @@ export default {
         pageSize: 10
       }
     };
+  },
+  components: {
+    flush
   },
   methods: {
     init() {
